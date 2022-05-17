@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<style type="text/css">
+body{
+
+		height: 100%;
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename = 'images/reg2.jpg')}}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	overflow-y: fixed;
+	overflow-x: hidden;
+	background-attachment: fixed;
+}
+
+*{
+	margin-top: 0;
+	padding: 0;
+	
+}
+
+.navbar {
+  background-color: #333;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.dropdown {
+  float: left;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: #ABB2B9;
+  border-radius: 5px;
+}
+
+.navbar .kpa:hover{
+  background-color: #3498DB;
+}
+
+.navbar .nn:hover{
+  background-color: transparent;
+}
+
+.navbar .n:hover{
+  background-color: transparent;
+}
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
+span {
+	margin-right:0% ;
+	background: transparent;
+	width: 27%;
+}
+span a{
+	margin-right: 4%;
+	padding-left: 5%;
+}
+.kpa{
+	margin-left: 3%;
+	background: transparent;
+	border-radius: 40px;
+}
+.kpa img{
+	height: 40px;
+	width: 40px;
+}
+	.rowan{
+		margin-top: 43px;
+		margin-right:10px;
+		display: ;
+	}
+
+	
+	.first ul li{
+		display: inline;
+		float: right;
+		margin-right: 2%;
+	}
+
+
+	.nn{
+		text-decoration: none;
+		margin-left: 1%;
+	}
+
+	.second ul li{
+       display: inline;
+       margin-right: -2%;
+       padding-left: 2%;
+       margin-left: 4%;
+       margin-top: 3%;
+
+	}
+	.pau{
+		background: skyblue;
+	}
+
+
+	.class1{
+  	margin-top: 10vh;
+  	background: white;
+  	height: 100%;
+  	width: 60%;
+  	margin-left: 19.5%;
+  	border-radius: 5px;
+  	opacity: 0.7;
+
+  }
+
+	.cont2{
+		background: white;
+		height: 100%;
+		width: 40%;
+		border-radius: 5px;
+		font-family: cursive;
+		margin-top: 7vh;
+		opacity: 0.7;
+		display: none;
+		margin-left: 30%;
+	}
+
+	.odaa{
+		background: white;
+		height: 100%;
+		width: 40%;
+		border-radius: 5px;
+		font-family: cursive;
+		margin-top: 2%;
+		opacity: 0.7;
+		display: none;
+		margin-left: 30%;
+	}
+	.cont3{
+		background: white;
+		height: 100%;
+		width: 40%;
+		border-radius: 5px;
+		font-family: cursive;
+		margin-top: 10vh;
+		opacity: 0.7;
+		display: none;
+		margin-left: 30%;
+	}
+
+	.cont5{
+		background: white;
+		height: 100%;
+		width: 80%;
+		border-radius: 5px;
+		font-family: cursive;
+		margin-top: 10vh;
+		opacity: 0.8;
+		display: none;
+	}
+	.cont1 h3{
+		padding-top: 2%;
+		text-align: center;
+	}
+	.cont3 h3{
+		padding-top: 2%;
+	}
+	}
+
+
+	.cont3 h3{
+		padding-top: 2%;
+	}
+	.cont4 h3{
+		padding-top: 2%;
+	}
+	.cont5 h3{
+		padding-top: 2%;
+	}
+	
+	.cont2{
+		display: none;
+	}
+	.odaa{
+		display: none;
+	}
+
+
+ .cont1 .add ul li{
+        
+     list-style: none;
+    } 
+
+    .cont1 .ad ul li{
+        
+     list-style: none;
+    }
+    .cont1 .adddd ul li{
+        
+     list-style: none;
+    }
+     .cont1 .add ul li a{
+        text-decoration: none;
+        margin-top: -40.1%;
+        padding-top: 3.5vh;
+        margin-bottom: 42.1%;
+        padding-bottom: 3.5vh;
+        padding-left: 3%;
+        padding-right: 2%;
+        border-radius: 6px;
+        color: white;
+        display: block;
+        width: 18%;
+        background: #212F3D;
+        margin-left: 28%;
+    
+    }
+    .cont1 .adddd ul li a{
+  
+
+        text-decoration: none;
+        margin-top: -121.5%;
+        padding-top: 1.5vh;
+        margin-bottom: 123.5%;
+        padding-bottom: 1.5vh;
+        padding-left: 3%;
+        padding-right: 2%;
+        border-radius: 6px;
+        color: red;
+        display: block;
+        width: 18%;
+        background: #F5B041;
+        margin-left: 70%;
+    
+    
+    }
+      .cont1 .ad ul li a{
+        text-decoration: none;
+       
+        padding-top: 1.5vh;
+        padding-bottom:1.5vh;
+        padding-left: 3%;
+        padding-right: 2%;
+        border-radius: 6px;
+        color: indigo;
+        display: block;
+        width: 18%;
+        background: #7FB3D5;
+        margin-right: 0%;
+        margin-top: 2%;
+        margin-left: 7%;
+    
+    }
+    .cont1 .addd ul li{
+        
+     list-style: none;
+    }
+
+     .cont1 .addd ul li a{
+        text-decoration: none;
+        margin-top: -80.8%;
+        padding-top: 1.5vh;
+        margin-bottom: 83.0%;
+        padding-bottom: 1.5vh;
+        padding-left: 3%;
+        padding-right: 2%;
+        border-radius: 6px;
+        color: red;
+        display: block;
+        width: 18%;
+        background: #58D68D;
+        margin-left: 49%;
+    
+    }
+
+
+  
+   .cont2 .fff{
+   	margin-top: 10vh;
+   	font-style: oblique;
+   	font-family: monospace;
+  
+   }
+
+   .odaa .fff{
+   	margin-top: 5%;
+   	font-style: oblique;
+   	font-family: monospace;
+  
+   }
+
+
+   .cont3 .fff{
+   	margin-top: 10vh;
+   	font-style: oblique;
+   	font-family: monospace;
+  
+   }
+
+   .cont2 input{
+   	height: 2.3em;
+   	width: 70%;
+   	margin-left: 15%;
+   	border-radius: 5px;
+   	border: 0.3px solid grey;
+   	padding-left: 1%;
+   }
+
+   .odaa input{
+   	height: 2.3em;
+   	width: 70%;
+   	margin-left: 15%;
+   	border-radius: 5px;
+   	border: 0.3px solid grey;
+   	padding-left: 1%;
+   }
+
+    .cont2 select{
+    height: 2.3em;
+   	width: 70%;
+   	margin-left: 15%;
+   	background: transparent;
+   	border-radius: 5px;
+   }
+   .cont3 select{
+   	height: 2.3em;
+   	width: 100%;
+   	margin-left: 15%;
+   	background: transparent;
+   	border-radius: 5px;
+   }
+   .cont2 label{
+   	width: 70%;
+   	margin-left: 15%;
+   	background: transparent;
+   }
+
+   .odaa label{
+   	width: 70%;
+   	margin-left: 15%;
+   	background: transparent;
+   }
+   .cont3 label{
+   	width: 70%;
+   	margin-left: 15%;
+   	background: transparent;
+   }
+
+.cont2 .sub{
+	height: 2.2em;
+	width: 15vw;
+	margin-top: 3%;
+	margin-left: 11vw;
+	background: #2E4053;
+	color: white;
+	border-radius: 5px;
+}
+
+.odaa .sub{
+	height: 2.2em;
+	width: 15vw;
+	margin-top: 3%;
+	margin-left: 11vw;
+	background: #2E4053;
+	color: white;
+	border-radius: 5px;
+}
+
+
+.cont3 .sub{
+	height: 2.2em;
+	width: 13vw;
+	margin-top: 5%;
+	margin-left: 13vw;
+	background: #2E4053;
+	color: yellow;
+	border-radius: 5px;
+}
+.cont2 form .dunu{
+	background: #D6DBDF;
+	height: 50vh;
+	margin-top: 5%;
+	opacity: 0.8;
+}
+
+.odaa form .dunu{
+	background: #D6DBDF;
+	height: 50vh;
+	margin-top: 5%;
+	opacity: 0.8;
+}
+ 
+.cont2 form .dunu h3{
+	margin-top: 4%;
+	color: #A04000;
+	text-align: center;
+	padding-top: 5%;
+	padding-bottom: 5%;
+}
+.cont2 form .dunu input{
+	width: 70%;
+   	height: 6vh;
+   	margin-left: 15%;
+   	background: transparent;
+   	border: 1px black solid;
+   	border-radius: 5px;
+}
+
+.cont2 form .dunu .bd{
+	margin-top: 3%;
+	width: 25%;
+	height: 5vh;
+	margin-left: 37%;
+	background:#2980B9 ;
+	border-radius: 5px;
+	border-color: #2980B9;
+	color: white;
+}
+.second .sos{
+		width: 10%;
+	}
+  
+
+
+   .waaa{
+  	background: brown;
+  	width: 40vw;
+  }
+
+
+
+   .ro1{
+   background: transparent;
+  	margin-top: 6vh;
+  }
+
+  .ro2{
+  	background: transparent;
+  	margin-top: 1%;
+  }
+
+
+.btn{
+  	width: 13vw;
+  	height: 6.2em;
+  	background: black;
+  	margin-left: 2%;
+  	padding-top: 2%;
+
+  }
+  .btn p{
+  	color: yellow;
+  }
+ 
+ .btn1{
+ 	padding-top: 2%;
+ 	background:#34495E;
+ 	color: white;
+ 	font: 16px;
+ }
+  
+ .btn1 p{
+ 	color: yellow;
+ }
+ .btn2{
+ 	background: #5D6D7E;
+ 	padding-top: 2%;
+ 	color: white;
+ 	font: 16px;
+ }
+ .btn2 p{
+ 	color: yellow;
+ }
+ .btn5{
+ 	background: #D35400;
+ }
+  .btn6{
+ 	background: #3498DB;
+ 	padding-top: 2%;
+ 	color: white;
+ 	font: 16px;
+ }
+  .btn6 p{
+  	color: yellow;
+  	font: 16px;
+  }
+
+
+  .kpa{
+  	margin-left: 2%;
+  }
+
+ 
+
+
+
+   @media  (max-width:900px){
+   	body{
+   		height: 100%;
+	    background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename='images/reg2.jpg')}}");
+	    background-size: cover;
+	    background-repeat: no-repeat;
+	    overflow-y: fixed;
+	    overflow-x: hidden;
+	    background-attachment: fixed;
+   	}
+  	.cont2{
+  		background: white;
+		height: 100%;
+		width: 75vw;
+		border-radius: 5px;
+		font-family: cursive;
+		margin-top: 14vh;
+		opacity: 0.6;
+		display: none;
+		margin-left: 13vw;
+  	}
+
+  	.cont2 select{
+   	width: 90%;
+   	margin-left: 5%;
+   	background: transparent;
+   	border-radius: 5px;
+   }
+
+
+  	.cont2 input{
+   	height: 2.3em;
+   	width: 90%;
+   	margin-left: 5%;
+   	border-radius: 5px;
+   	border: 0.3px solid grey;
+   	padding-left: 1%;
+   }
+
+   .cont2 label{
+   	width: 90%;
+   	margin-left: 5%;
+   	background: transparent;
+   }
+
+  .odaa input{
+   	height: 2.3em;
+   	width: 90%;
+   	margin-left: 5%;
+   	border-radius: 5px;
+   	border: 0.3px solid grey;
+   	padding-left: 1%;
+   }
+
+   .odaa label{
+   	width: 90%;
+   	margin-left: 5%;
+   	background: transparent;
+   }
+
+  	.odaa{
+  		background: white;
+		height: 100%;
+		width: 75vw;
+		border-radius: 5px;
+		font-family: cursive;
+		margin-top: 14vh;
+		opacity: 0.6;
+		display: none;
+		margin-left: 13vw;
+  	}
+  	.cont3 h3{
+		padding-top: 6%;
+	}
+  	.class1{
+  	margin-top: 9vh;
+  	background: white;
+  	height: 100%;
+  	width: 85vw;
+  	margin-left: 8.5vw;
+  	border-radius: 5px;
+  	opacity: 0.6;
+
+  }
+
+
+	.cont3{
+		background: white;
+		height: 100%;
+		width: 75vw;
+		border-radius: 5px;
+		font-family: cursive;
+		margin-top: 14vh;
+		opacity: 0.8;
+		display: none;
+		margin-left: 13vw;
+	}
+
+
+  .btn{
+  	width: 24vw;
+  	height: 6.2em;
+  	background: black;
+  	margin-left: 2%;
+  }
+  .btn1 p{
+ 	color: yellow;
+ }
+  .btn1{
+  	width: 24vw;
+  	height: 6.2em;
+  	margin-left: 2%;
+ 	  background:#34495E;
+ 	  color: white;
+ 	  font: 16px;
+ }
+ .btn2{
+ 	  background: #5D6D7E;
+  	width: 24vw;
+  	height: 6.2em;
+  	margin-left: 2%;
+ }
+ .btn5{
+ 	  background: #D35400;
+ 	  width: 24vw;
+  	height: 6.2em;
+  	margin-left: 2%;
+ }
+  .btn6{
+ 	  background: #3498DB;
+ 	  width: 24vw;
+  	height: 6.2em;
+  	margin-left: 2%;
+ }
+
+ .ro2{
+  	background: transparent;
+  	margin-top: 2%;
+  }
+
+
+.cont2 .sub{
+	height: 2.3em;
+	width: 20vw;
+	margin-top: 4vh;
+	margin-left: 22vw;
+	background: #2E4053;
+	color: white;
+}
+
+.odaa .sub{
+	height: 2.3em;
+	width: 20vw;
+	margin-top: 4vh;
+	margin-left: 22vw;
+	background: #2E4053;
+	color: white;
+}
+.cont3 .sub{
+	height: 2.3em;
+	width: 20vw;
+	margin-top: 5%;
+	margin-left: 24vw;
+	background: #2E4053;
+	border-radius: 5px;
+}
+   }
+
+
+    @media(max-width: 500px){
+
+    	body{
+   		height: 100%;
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)), url("../../images/reg2.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	overflow-y: fixed;
+	overflow-x: hidden;
+	background-attachment: fixed;
+   	}
+
+    	.cont2 input{
+   	height: 2.3em;
+   	width: 90%;
+   	margin-left: 5%;
+   	border-radius: 5px;
+   	border: 0.3px solid grey;
+   	padding-left: 1%;
+   }
+
+   .cont2 select{
+   	width: 90%;
+   	margin-left: 5%;
+   	background: transparent;
+   	border-radius: 5px;
+   }
+
+   .cont2 label{
+   	width: 90%;
+   	margin-left: 5%;
+   	background: transparent;
+   }
+
+   .odaa input{
+   	height: 2.3em;
+   	width: 90%;
+   	margin-left: 5%;
+   	border-radius: 5px;
+   	border: 0.3px solid grey;
+   	padding-left: 1%;
+   }
+
+   .odaa label{
+   	width: 90%;
+   	margin-left: 5%;
+   	background: transparent;
+   }
+
+
+.class1{
+  	margin-top: 9vh;
+  	background: white;
+  	height: 100%;
+  	width: 95%;
+  	margin-left: 2%;
+  	border-radius: 5px;
+  	opacity: 0.6;
+
+  }
+
+
+  .btn{
+  	width: 24vw;
+  	height: 6.3em;
+  	background: black;
+  	margin-left: 0%;
+  }
+   
+  .btn3{
+    width: 24vw;
+  	height: 6.3em;
+  	background: black;
+  	margin-left: 0%;
+  }
+
+  .btn4{
+  	width: 24vw;
+  	height: 6.3em;
+  	background: black;
+  	margin-left: 0%;
+  }
+  .btn1 p{
+ 	color: yellow;
+ }
+  .btn1{
+  	width: 24vw;
+  	height: 6.3em;
+  	margin-left: 0%;
+ 	  background:#34495E;
+ 	  color: white;
+ 	  font: 16px;
+ }
+ .btn2{
+ 	  background: #5D6D7E;
+  	width: 24vw;
+  	height: 6.3em;
+  	margin-left: 0%;
+ }
+ .btn5{
+    background: #D35400;
+  	width: 24vw;
+  	height: 6.3em;
+  	margin-left: 0%;
+ }
+  .btn6{
+ 	background: #3498DB;
+    width: 24vw;
+  	height: 6.3em;
+  	margin-left: 0%;
+ }
+
+   }
+
+
+ .modal1{
+    background: #FDFEFE;
+    height: 17em;
+  }
+  .modal{
+    overflow: auto;
+  }
+  .modal-open{
+    overflow: auto;
+  }
+  .modal-open[style]{
+    padding-right: 0px ! important;
+  }
+
+  .fw-bolds{
+    margin-left: 5em;
+    width: 100%;
+    color: black;
+  }
+
+  .fw-bold{
+    background: #D35400 ;
+    color: white;
+    width: 25%;
+    height: 2.1em;
+    border: 1px solid #D35400;
+    border-radius: 5px;
+  }
+
+  .clss{
+    margin-top: 10%;
+    margin-bottom: 6%;
+    width: 70%;
+    height: 2.3em;
+  }
+
+  .but{
+    background:#566573;
+    border: 1px solid #566573;
+    border-radius: 5px;
+    color: white;
+    width: 20%;
+    height: 2.1em;
+  }
+
+  @media(max-width: 900px){
+    .fw-bolds{
+    margin-left: 3em;
+    width: 100%;
+    color: black;
+  }
+  }
+</style>
+<body>
+
+<header>
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			     <a class="navbar-brand kpa" href="#"><img src="{{url_for('static', filename = 'images/kpasec.png')}}"></a>
+			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+			      <span class="navbar-toggler-icon"></span>
+			    </button>
+			    
+			    <div class="collapse navbar-collapse" id="navbarText">
+			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+			        <li class="nav-item">
+			          <a class="nav-link active " aria-current="page" href="{{dashboard_stats}}"id="nav1" style="color:black;">Home</a>
+			        </li>
+			        <li class="nav-item d-flex" >
+		
+			        </li>
+
+			        <li class="nav-item d-flex">
+			          <a class="nav-link navv" href="#" id="nav2">Reports</a>
+			        </li>
+			        <li class="nav-item">
+			          <a class="nav-link " href="#" id="nav3">ToDo</a>
+			        </li>
+			        <li class="nav-item">
+			          <a class="nav-link " href="#" id="other">External-income</a>
+			        </li>
+
+			        <li class="nav-item">
+			          <a class="nav-link " href="" id="student" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="">Debtors</a>
+			        </li>
+			        
+			      </ul>
+
+			      <span class="navbar-text" >
+			      	<a href="" class="nn">{{g.user['fullname']}}</a>
+			      	<a href="{{url_for('users.logout')}}" class="n">Logout</a>
+			      </span>
+			 
+			    </div>
+		 </nav>
+<div class="flash">
+  </div>
+	</header>
+
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ">
+    <div class="modal-content modal1" id="modal1">
+      <div class="modal-header">
+     <h5 class="modal-title fw-bolds" id="staticBackdropLabel">List of students by class</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="button2"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+          <form id="myForm" name = 'form1' action="" method="POST" autocomplete="off" onsubmit="return sendClassData()">
+           <label>Choose a Class</label>
+           <br>
+           <select style='margin-bottom:2%; width: 60%;height:2.3em;border-radius:3px' required id="debt1">
+           	<option></option>
+           	{% for cls1 in form %}
+           	<option value="{{cls1}}">{{cls1}}</option>
+           	{% endfor %}
+            </select>
+           <br>
+           <input type="submit" name="" class="but">
+           <br>
+        </form>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="row ">
+
+
+
+	
+	<div class="class1" id="cont1" >
+		 <h3 style="text-align:center;margin-top: 3vh; font-style: oblique;">Accountant Dashboard</h3>
+
+		 <center>
+
+		 		<div class=" row ro1">
+		 	      <div class="col waa " >
+		 	        <a href=""><div class=" btn btn-success btn1" id="btn1"><span id=""></span>Student Stats<br><p id="">{{stud}}</p></div></a> 
+
+		 	         <a href=""><div class=" btn btn-success btn2" id="btn2">PTA Income<br><p>GHC <span id="">{{pta}}</span></p></div></a>
+
+		 	         <a href=""><div class=" btn btn-success btn3" id="btn3"> E.T.L Income<br><p>GHC <span id="">{{etl}}</span></p></div>	</a>	 	
+		         </div>
+		       </div>
+	
+		 
+
+		 <div class="row ro2">
+		 	 <div class="col waa " >
+		 	 <a href="{{url_for('accountant.daily_reports')}}"><div class=" btn btn-success btn4" id="btn4">Daily<br>Report</div></a>
+		 	 <a href="{{url_for('accountant.search_ledger')}}"><div class=" btn btn-success btn5" id="btn5">Generate<br>Student Ledger</div></a>
+
+		 	 <a href=""><div class=" btn btn-success btn6" id="btn6">Expenses<br><p> GHC 891</p></div></a>
+		 	
+		 </div>
+		 </div><br><br><br>
+		 </center>
+		 
+	   </div><br>
+
+
+
+    <div class="row cont2"  id="cont2">
+  	   
+  	<form method="POST" action="" id="student_data" class="fff" onsubmit="return sendReportData()">
+			<h3 style="text-align: center;">Accounting Report</h3>
+			<label>Choose A Report</label><br>
+			<select required id="report">
+				<option></option>
+				<option>CASH RECEIPT</option>
+				<option>CASH PAYMENT</option>
+				<option>INCOME AND EXPENDITURE</option>
+			</select>
+			<br>
+			<label>Choose Category</label><br>
+			<select required id="type">
+				<option></option>
+				<option>PTA</option>
+				<option>ETL</option>
+			</select>
+			<br>
+
+			<label>Start Date</label><br>
+			<input type="date" name="" id="start" required>
+			<br>
+			<label>End Date</label><br>
+			<input type="date" name="" id="end" required>
+			<br>
+
+			<input type="submit" name="" class="sub">
+			<br>
+		</form><br>
+			
+  </div><br><br>
+
+
+
+  <div class="row odaa"  id="oda">
+  	   
+  	<form method="POST" action="" id="student_data" class="fff" onsubmit=" return sendOtherIncomeData()">
+			<h3 style="text-align: center;">External Income  </h3>
+			<label>Business Name</label><br>
+			<input type="text" name="" placeholder="Enter business name" required id="ex_name">
+			<label>Details </label><br>
+			<input type="text" name="" placeholder="Brief description" required id="ex_details">
+			<br>
+			<label>Income period start</label><br>
+			<input type="date" name="" required id="ex_start">
+			<br>
+			<label>Income period end</label><br>
+			<input type="date" name="" required id="ex_end"><br>
+			<label>Amount </label><br>
+			<input type="text" name="" placeholder="Enter amount" required id="ex_amount">
+			<br>
+			<input type="submit" name="" class="sub">
+			<br>
+
+		</form><br>
+			
+  </div><br><br>
+
+
+ <div class="cont3" id="cont3">		
+
+		<form method="POST" action="" id="student_data" class="fff" onsubmit="return redirect()">
+			<h3 style="text-align: center;">Todo Task</h3>
+			<label>Choose A Task</label><br>
+			<select style="width:70%;" id="task" required>
+				<option></option>
+				<option>Begin Semester</option>
+				<option>Make PTA Expenses</option>
+				<option>Make ETL Expenses</option>
+				<option>Promote Students</option>
+			</select>
+			<br>
+			<input type="submit" name="" class='sub' onclick="">
+			<br><br>
+		</form><br><br>
+</div><br>
+
+
+
+   <center>
+
+		<div class="cont5" id="cont5">
+			<h3>This is where analytics list will be</h3>
+		</div><br>
+
+  </center>
+
+	<div class="col"></div>
+
+
+
+</div>
+
+<script src="../js/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+function obtainClasses() {
+	
+				fetch("http://127.0.0.1:8080/accountant/get_student_classes")
+						.then(response => response.json())
+						.then(data => {
+						  all_data = data['data'];
+						  let msg = document.getElementById('debt1').innerHTML
+						  for (var i = 0; i < all_data.length; i++) {
+						  	msg += `<option>${all_data[i][1]}</option>`
+						  }
+						  document.getElementById('debt1').innerHTML = msg
+						  
+						})
+						.catch((error) => {
+						  return ('Error:', error);
+						});
+				}
+
+
+
+//obtainClasses()
+
+
+
+
+function sendReportData () {
+  // (A) GET FORM DATA
+  
+  			let start = document.getElementById("start").value
+  			let end = document.getElementById("end").value
+  			let type = document.getElementById("type").value
+  			let report = document.getElementById("report").value
+			  let form_dat = {
+			  	start: start,
+			  	end: end,
+			  	type: type,
+			  	report: report,
+
+			  }
+
+			  fetch("http://127.0.0.1:8080/accountant/reports", {
+					  method: 'POST', // or 'PUT'
+					  headers: {
+					    'Content-Type': 'application/json',
+					  },
+					  body: JSON.stringify(form_dat),
+					})
+					.then(response => response)
+					.then(data => {
+					  //msg = data['message'];
+					  if (data.status === 200) {
+
+					  	if (report === 'CASH RECEIPT' && type === 'ETL'){
+					  		window.location.href = "etl_cash_receipt"
+					  	}
+
+					  	if (report === 'CASH RECEIPT' && type === 'PTA'){
+					  		window.location.href = "pta_cash_receipt"
+					  	}
+
+					  	if (report === 'CASH PAYMENT' && type === 'ETL'){
+					  		window.location.href = "etl_cash_payment"
+					  	}
+
+					  	if (report === 'CASH PAYMENT' && type === 'PTA'){
+					  		window.location.href = "pta_cash_payment"
+					  	}
+					  	document.getElementById("start").value = ""
+					  	document.getElementById("end").value = ""
+					  	document.getElementById("type").value = ""
+					  	document.getElementById("report").value = ""
+
+					  	
+					  }else{
+					  	return ('message')
+					  }
+					})
+					.catch((error) => {
+					  return ('Error:', error)
+					})
+
+					return false;
+				}
+
+
+
+
+function sendOtherIncomeData () {
+  // (A) GET FORM DATA
+  
+			  
+			  let form_dat = {
+			  	start: document.getElementById("ex_start").value,
+			  	end: document.getElementById("ex_end").value,
+			  	amount: document.getElementById("ex_amount").value,
+			  	name: document.getElementById("ex_name").value,
+			  	details: document.getElementById("ex_details").value,
+
+			  }
+
+			  fetch("http://127.0.0.1:8080/accountant/other_business", {
+					  method: 'POST', // or 'PUT'
+					  headers: {
+					    'Content-Type': 'application/json',
+					  },
+					  body: JSON.stringify(form_dat),
+					})
+					.then(response => response.json())
+					.then(data => {
+					  msg = data['message'];
+					  if (msg === 'success') {
+					  	
+					  	document.getElementById("ex_start").value = ""
+					  	document.getElementById("ex_end").value = ""
+					  	document.getElementById("ex_amount").value = ""
+					  	document.getElementById("ex_name").value = ""
+					  	document.getElementById("ex_details").value = ""
+					  }else{
+					  	return (data['message'])
+					  }
+					})
+					.catch((error) => {
+					  return ('Error:', error);
+					});
+
+					return false;
+				}
+
+
+
+function sendClassData () {
+  // (A) GET FORM DATA
+  
+		  
+		  let form_dat = document.getElementById("debt1").value
+		  
+
+		  window.location.href = `debtors_list?form=${form_dat}`
+
+				return false;
+			}
+
+
+function getStatsData () {
+  // (A) GET FORM DATA
+
+		  fetch("http://127.0.0.1:8080/accountant/dashboard_stats")
+				.then(response => response.json())
+				.then(data => {
+				  all_data = data['data']
+				  document.getElementById('std1').innerText = all_data['students']
+				  document.getElementById('etl_stat1').innerText = all_data['etl']
+				  document.getElementById('pta_stat1').innerText = all_data['pta']
+				  //document.getElementById('total1').innerText = parseFloat(all_data['pta']) + parseFloat(all_data['etl'])
+				  
+				})
+				.catch((error) => {
+				  return ('Error:', error);
+				});
+
+				return false;
+			}
+
+
+//getStatsData()
+
+
+
+
+
+
+	function redirect(){
+		let val = document.getElementById('task').value
+		if (val == "Make ETL Expenses")
+		 {
+		 	window.location.href = "etl_expenses"
+		 }
+		 if (val == "Make PTA Expenses") 
+		 {
+		 	window.location.href = "pta_expenses"
+		 }
+		 if (val == "Begin Semester") 
+		 {
+		 	window.location.href = "begin_semester"
+		 }
+
+		 if (val == "Promote Students") 
+		 {
+		 	window.location.href = "promote_students"
+		 }
+		return false
+	}
+</script>
+
+<script >
+      $("#nav1").click(function () {
+       $("#cont1").css("display", "block");
+       $("#cont2").css("display","none");
+       $("#cont3").css("display","none");
+       $("#cont4").css("display","none");
+       $("#cont5").css("display","none");
+        $("#oda").css("display","none");
+       
+      });
+
+     $("#nav2").click(function () {
+       $("#cont2").css("display", "block");
+       $("#cont1").css("display","none");
+       $("#cont3").css("display","none");
+       $("#cont4").css("display","none");
+       $("#cont5").css("display","none");
+       $("#oda").css("display","none");
+
+       
+      });
+
+     $("#nav3").click(function () {
+       $("#cont2").css("display", "none");
+       $("#cont3").css("display","block");
+       $("#cont1").css("display","none");
+       $("#cont4").css("display","none");
+       $("#cont5").css("display","none");
+       $("#oda").css("display","none");
+      
+       
+      });
+
+       $("#nav4").click(function () {
+       $("#cont1").css("display", "none");
+       $("#cont2").css("display","none");
+       $("#cont4").css("display","block");
+       $("#cont3").css("display","none");
+       $("#cont5").css("display","none");
+       $("#oda").css("display","none");
+       
+      });
+
+      $("#nav5").click(function () {
+       $("#cont1").css("display", "none");
+       $("#cont2").css("display","none");
+       $("#cont5").css("display","block");
+       $("#cont4").css("display","none");
+       $("#cont3").css("display","none");
+       $("#oda").css("display","none");
+
+      });
+
+      $("#other").click(function () {
+       $("#cont1").css("display", "none");
+       $("#cont2").css("display","none");
+       $("#cont5").css("display","none");
+       $("#cont4").css("display","none");
+       $("#cont3").css("display","none");
+       $("#oda").css("display","block");
+
+      });
+
+       $("#student").click(function () {
+       $("#cont1").css("display", "none");
+       $("#cont2").css("display","none");
+       $("#cont5").css("display","none");
+       $("#cont4").css("display","none");
+       $("#cont3").css("display","none");
+       $("#oda").css("display","none");
+       $("#staticBackdrop").css("display","block");
+
+      });
+       
+       $("#button2").click(function () {
+       $("#staticBackdrop").css("display", "none");
+       
+       $("#cont1").css("display","block");
+
+      });
+if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+   </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+</html>

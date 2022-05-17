@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<title>Pay Search Results</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<style type="text/css">
+
+
+
+
+body{
+
+	height: 100%;
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename='images/reg2.jpg')}}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	overflow-y: scroll;
+	background-attachment: fixed;
+}
+
+*{
+	margin-top: 0;
+	padding: 0;
+	
+}
+
+.navbar {
+  background-color: #333;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.dropdown {
+  float: left;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: #ABB2B9;
+  border-radius: 5px;
+}
+
+.navbar .kpa:hover{
+  background-color: #3498DB;
+}
+
+.navbar .nn:hover{
+  background-color: transparent;
+}
+
+.navbar .n:hover{
+  background-color: transparent;
+}
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
+span {
+	margin-right:0% ;
+	background: transparent;
+	width: 27%;
+}
+span a{
+	margin-right: 4%;
+	padding-left: 5%;
+}
+.kpa{
+	margin-left: 3%;
+	background: transparent;
+	border-radius: 40px;
+}
+.kpa img{
+	height: 40px;
+	width: 40px;
+}
+	.first ul li{
+		display: inline;
+		float: right;
+		margin-right: 2%;
+	}
+	.nn{
+		text-decoration: none;
+	}
+
+	.second ul li{
+       display: inline;
+       margin-right: -2%;
+       padding-left: 2%;
+       margin-left: 4%;
+       margin-top: 3%;
+
+	}
+
+	.spa{
+		padding: 5px 30px;
+		background-color: #eee;
+		border-radius: 5px;
+		user-select: none;
+		transform: 0.5s;
+		color: #000;
+	}
+	.spa:hover{
+		background-color: #ccc;
+
+	}
+
+	.sppa{
+		padding: 5px 30px;
+		background-color: #eee;
+		border-radius: 5px;
+		user-select: none;
+		transform: 0.5s;
+		color: #000;
+	}
+	.sppa:hover{
+		background-color: #ccc;
+
+	}
+	input[ type="radio"]:checked + .spa{
+		background-color: #2874A6;
+		color: #fff;
+	}
+
+	input[ type="radio"]:checked + .sppa{
+		background-color: #2874A6;
+		color: #fff;
+	}
+	.pet{
+		display: none;
+	}
+
+
+	.class2{
+		height: 100%;
+		width: 50%;
+		border-radius: 5px;
+		background: white;
+		margin-left: 25%;
+		opacity: 0.8;
+		margin-bottom: 2%;
+	}
+
+	  .class2 .rec{
+		background:#34495E ;
+		width: 18%;
+		margin-left: 0%;
+		color: white;
+		border-radius: 5px;
+		margin-top: 2%;
+		margin-bottom: 2%;
+		height: 2.1em;
+		border-color: #34495E;
+	}
+	.class2 .middle{
+		height: 2vh;
+		background: black;
+	}
+
+
+
+  	.class22{
+		height: 100%;
+		width: 50%;
+		border-radius: 5px;
+		background: white;
+		margin-left: 25%;
+		opacity: 0.8;
+		margin-bottom: 2%;
+		display: none;
+	}
+
+	  .class22 .rec{
+		background:#34495E ;
+		width: 18%;
+		margin-left: 0%;
+		color: white;
+		border-radius: 5px;
+		margin-top: 2%;
+		margin-bottom: 2%;
+		height: 2.1em;
+		border-color: #34495E;
+	}
+	.class22 .middle{
+		height: 2vh;
+		background: black;
+	}
+
+	.pta{
+		margin-left: 0%;
+	}
+	.etl{
+		margin-left: 0%;
+	}
+
+
+	.class2 .caten{
+		width: 60%;
+		height: 2.1em;
+		border-radius: 5px;
+		border: 0.3px solid black;
+		margin-left: 0%;
+		padding-left: 2%;
+	}
+
+	.class22 .caten{
+		width: 60%;
+		height: 2.1em;
+		border-radius: 5px;
+		border: 0.3px solid black;
+		margin-left: 0%;
+		padding-left: 2%;
+	}
+
+	.pr{
+		margin-top: 3%;
+	}
+
+
+	.ssem select{
+		width: 60%;
+		height: 2.1em;
+		border-radius: 5px;
+		border: 0.3px solid black;
+		margin-left: 0%;
+		padding-left: 2%;
+		margin-bottom: 2%;
+
+	}
+	.class2 .action{
+		margin-top: 3%;
+		margin-bottom: 3%;
+	}
+
+	.class2 #etl1{
+		display: none;
+	}
+	.class2 #both1{
+		display: none;
+	}
+
+
+	.class22 .action{
+		margin-top: 3%;
+		margin-bottom: 3%;
+	}
+
+	.class22 #etl1{
+		display: none;
+	}
+	.class22 #both1{
+		display: none;
+	}
+
+	
+	.class1 h3{
+		margin-left: 32%;
+		padding-top: 2%;
+		padding-left: 2%;
+	}
+	.class2 h3{
+		margin-left: 32%;
+		padding-top: 2%;
+		padding-left: 2%;
+	}
+	.class22 h3{
+		margin-left: 32%;
+		padding-top: 2%;
+		padding-left: 2%;
+	}
+	.waa .eer{
+		height: 3vh;
+	}
+	
+
+	.second .sos{
+		width: 10%;
+	}
+
+	.box{
+		height: 2.2em;
+		width: 92%;
+		border-radius: 3px;
+		border: solid 1px black;
+	}
+
+	.boxx{
+		height: 2.2em;
+		width: 92%;
+		border-radius: 3px;
+		border: solid 1px black;
+	}
+
+    .ro1{
+    	background: transparent;
+    	margin-top: 2vh;
+    	width: 50vw;
+    }
+
+    .col1{
+     background: white;
+    }
+
+    .col1 .ss{
+         width: 20vw;
+         height: 2.2em;
+    }
+    .col1 .mm{
+         width: 20vw;
+         height: 2.2em;
+         align-content: flex-start;
+    }
+    .col1 input{
+    	width: 20vw;
+         height: 2.2em;
+         border-radius: 3px;
+         border: 1px solid grey;
+    }
+   
+
+	 @media  (max-width:900px){
+
+	     .class2{
+		height: 100%;
+		width: 100%;
+		border-radius: 5px;
+		background: white;
+		margin-left: 0%;
+		opacity: 0.8;
+		margin-top: 2%;
+
+	}
+
+
+	.box{
+		height: 26%;
+		width: 100%;
+		border-radius: 3px;
+		border: solid 1px black;
+		word-wrap: break-word;
+
+	}
+
+	.boxx{
+		height: 26%;
+		width: 100%;
+		border-radius: 3px;
+		border: solid 1px black;
+		word-wrap: break-word;
+		overflow-y: scroll;
+	}
+	.class2 .rec{
+		background:#34495E ;
+		width: 27%;
+		color: white;
+		border-radius: 5px;
+		margin-top: 2%;
+		margin-bottom: 5%;
+		height: 2.1em;
+		border-color: #34495E;
+	}
+    }
+
+
+    }
+  	
+   }
+</style>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			     <a class="navbar-brand kpa" href="#"><img src="{{url_for('static',filename='images/kpasec.png')}}"></a>
+			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+			      <span class="navbar-toggler-icon"></span>
+			    </button>
+			    
+			    <div class="collapse navbar-collapse" id="navbarText">
+			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+			        <li class="nav-item">
+			          <a class="nav-link active " aria-current="page" href="clerk_dashboard.html"id="nav1" style="color:black;">Home</a>
+			        </li>
+			        <li class="nav-item">
+			          <a class="nav-link" aria-current="page" href="#"id="nav2" style="color:black;">ETL</a>
+			        </li>	
+			        <li class="nav-item">
+			          <a class="nav-link" aria-current="page" href="#"id="nav3" style="color:black;">PTA</a>
+			        </li>	
+			        <li class="nav-item">
+			          <a class="nav-link active " aria-current="page" href="#"id="nav4" style="color:black;" >Print Receipt</a>
+			        </li>	        
+			      </ul>
+
+			      <span class="navbar-text" >
+			      	<a href="" class="nn">{{g.user['fullname']}}</a>
+			      	<a href="{{url_for('users.logout')}}" class="n">Logout</a>
+			      </span>
+			 
+			    </div>
+		 </nav>
+
+	</header>
+
+  <div id="waa2" style="display: none;">
+  	 {% include 'receipt.html' %}
+  </div>
+
+   <div class="waa" id="waa">
+    <div class="eer">
+    	
+    </div>
+   	
+    
+    <div id="form" style="display: none">{{stud['form']}}</div>
+   	<div class="class2" id="pppt">
+   		<form method="POST" enctype="multipart/form-data" onsubmit="return submitPTAForm(this)" id="form-id" >
+  
+   			<h4 style="margin-left: 38%;padding-top: 3%;" class="text-danger">Student-Bio</h4>
+   		<center>
+   		 <div class="row ro1" style="width: 100%; " >
+   		 	<div class="col col1">
+   		 		<label>First Name</label><br>
+                <div class="boxx" id="firstname">{{stud['firstname']}}</div>
+                <label>Parents Contact</label><br>
+                <div class="box" id="">{{stud['phone']}}</div>
+                
+                <br>
+                
+   		 	</div>
+
+   		   <div class="col col1">
+   		 		<label>Last Name</label><br>
+                <div class="box" id="lastname">{{stud['lastname']}}</div>
+                <label>Student Class</label>
+                <br>
+                	<div class="box" id="">{{stud['form']}}</div>
+                <br>
+                
+                	
+   		  </div>
+   		   </center>
+   		   <div class="middle">
+   		   	
+   		   </div>
+   		   <div class="classes1">
+   		   	<center><h4 class="pr text-danger">Payment For P.T.A</h4></center>
+   		   	
+         <center>
+
+          <div class="ssem">
+          	<span style="color: red;" class="fw-bold">*</span>
+   		   		<select required 	id="pta_sem1">
+   		   			<option value="">Please choose semester...</option>
+   		   			<option value="SEM1">SEM1</option>
+   		   			<option value="SEM2">SEM2</option>
+   		   		</select>
+   		   		<br>
+   		   	</div>
+
+   		   	<div class="ssem">
+   		   		<span style="color: red;" class="fw-bold">*</span>
+   		   		<select id='pta_mode1' required>
+   		   			<option value="">Please choose payment mode..</option>
+   		   			<option value="Cash">Cash</option>
+   		   			<option value="Cheque">Cheque</option>
+   		   		</select>
+   		   		<br>
+   		   	</div> 
+
+   		   	<div id="" class="" style="margin-left:1%;">
+   		   		<input type="text" name="" placeholder="Enter cheque number" class="caten" style='' id = 'pta_cheq1'>
+   		   	</div>
+
+   		   	<div id="pta1" class="pta" style="margin-top: 2%;">
+   		   		<span style="color: red;" class="fw-bold">*</span>
+   		   		<input type="text" name="" placeholder="Enter P.T.A Amount"  class="caten" required id="pta_amt1">
+   		   	</div>
+
+   	
+   		   		<input type="submit" name="" class="rec" id='pta_subb1'>
+
+   		   	</center>
+   		   	
+
+       
+   		</div>
+          
+       
+   		</form><br>
+   			
+   		
+
+   	</div>
+
+
+
+    
+   <div class="class22" id="eeet">
+   		<form method="POST" enctype="multipart/form-data" onsubmit="return submitETLForm(this)" id="form-id">
+ 		
+  
+   			<h4 style="margin-left: 38%;padding-top: 3%;" class="text-danger">Student-Bio</h4>
+   		<center>
+   		 <div class="row ro1" style="width: 100%; " >
+   		 	<div class="col col1">
+   		 		<label>First Name</label><br>
+                <div class="boxx" id="">{{stud['firstname']}}</div>
+                <label>Parents Contact</label><br>
+                <div class="box" id="">{{stud['phone']}}</div>
+                
+                <br>
+                
+   		 	</div>
+
+   		   <div class="col col1">
+   		 		<label>Last Name </label><br>
+                <div class="box" id="">{{stud['lastname']}}</div>
+                <label>Student Class</label>
+                <br>
+                	<div class="box" id="">{{stud['form']}}</div>
+                <br>
+                
+                	
+   		  </div>
+   		   </center>
+   		   <div class="middle">
+   		   	
+   		   </div>
+   		   <div class="">
+   		   	<center><h4 class="pr text-danger">Payment For E.T.L</h4></center>
+
+         <center>
+
+          <div class="ssem">
+          	<span style="color: red;" class="fw-bold">*</span>
+   		   		<select required id="etl_sem1">
+   		   			<option value="">Please choose semester...</option>
+   		   			<option value="SEM1">SEM1</option>
+   		   			<option value="SEM2">SEM2</option>
+   		   		</select>
+   		   		<br>
+   		   	</div>
+
+   		   	<div class="ssem">
+   		   		<span style="color: red;" class="fw-bold">*</span>
+   		   		<select id='etl_mode1' required id="etl_mode1">
+   		   			<option value="">Please choose payment mode..</option>
+   		   			<option value="Cash">Cash</option>
+   		   			<option value="Cheque">Cheque</option>
+   		   		</select>
+   		   		
+   		   		<br>
+   		   	</div> 
+
+   		   	<div id="" class="" style="margin-left:1%;">
+   		   		<input type="text" name="n_etl_chq" placeholder="Enter cheque number" class="caten" 
+   		   		style='display:' id = 'etl_cheq1'>
+   		   	</div>
+   		   	<br>
+   		   	<div id="" class="etl" style="margin-top: -2%;">
+   		   		<span style="color: red;" class="fw-bold">*</span>	
+   		  		<input type="text" name="n_etl_amt" placeholder="Enter E.T.L Amount" class="caten" required id="etl_amt1">
+   		   	</div>
+
+   		   		<input type="submit" name="" class="rec" id='subb1'>
+   		   	</center>
+   		   	
+<style type="text/css">
+	.cls{
+		color: darkred;
+	}
+</style>
+       
+   		</div>
+          
+       
+   		</form><br>
+   			
+   		
+
+   	</div>
+
+
+
+
+
+   </div>
+
+
+<script type="text/javascript">
+	
+function submitETLForm(form) {
+		let form_dat = {
+					 semester: document.getElementById("etl_sem1").value,
+					 mode: document.getElementById("etl_mode1").value,
+					 number: document.getElementById("etl_cheq1").value,
+					 amount: document.getElementById("etl_amt1").value,
+					 name: document.getElementById('lastname').innerText + " " + document.getElementById('firstname').innerText,
+					 form: document.getElementById('form').innerText
+  				}
+
+	swal({
+		title: 'ETL! Payment, click to confirm',
+		text: `Payment of GHC ${document.getElementById("etl_amt1").value} by ${document.getElementById('lastname').innerText + " " + document.getElementById('firstname').innerText}`,
+		icon: 'warning',
+		buttons: [true, "Confirm"],
+		dangerMode: true,
+	}).then((isOkay) => {
+		if (isOkay){
+							
+				fetch("http://127.0.0.1:8080/clerk/etl_income", {
+					  method: 'POST', // or 'PUT'
+					  headers: {
+					    'Content-Type': 'application/json',
+					  },
+					  body: JSON.stringify(form_dat),
+					})
+					.then(response => response.json())
+					.then(data => {
+					  msg = data['message'];
+					  if (msg === 'success') {
+					  	
+					  		sessionStorage.setItem('etl_amt', document.getElementById("etl_amt1").value)
+
+					  		document.getElementById("etl_sem1").value = ""
+					  		document.getElementById("etl_mode1").value = ""
+					  		document.getElementById("etl_cheq1").value = ""
+					  		document.getElementById("etl_amt1").value = ""
+					  		
+					  		return swal({
+										  title: "SUCCESSFUL!",
+										  text: "Payment process successful!",
+										  icon: "success",
+										  button: "OK!",
+										});
+					  		
+					  }else{
+					  	return swal({
+									  title: "Error!",
+									  text: "An error occured, please check and try again",
+									  icon: "error",
+									  button: "OK",
+									});
+					  }
+					})
+					.catch((error) => {
+					  return ('Error:', error);
+					});
+
+		}
+	})
+	return false;
+}
+
+
+
+
+function submitPTAForm(form) {
+		let form_dat = {
+					 semester: document.getElementById("pta_sem1").value,
+					 mode: document.getElementById("pta_mode1").value,
+					 number: document.getElementById("pta_cheq1").value,
+					 amount: document.getElementById("pta_amt1").value,
+					 name: document.getElementById('lastname').innerText + " " + document.getElementById('firstname').innerText,
+					 form: document.getElementById('form').innerText
+  				}
+
+	swal({
+		title: 'PTA! Payment! Click to confirm',
+		text: `Payment of GHC ${document.getElementById("pta_amt1").value} by ${document.getElementById('lastname').innerText + " " + document.getElementById('firstname').innerText}`,
+		icon: 'warning',
+		buttons: [true, "Confirm"],
+		dangerMode: true,
+	}).then((isOkay) => {
+		if (isOkay){
+							
+				fetch("http://127.0.0.1:8080/clerk/pta_income", {
+					  method: 'POST', // or 'PUT'
+					  headers: {
+					    'Content-Type': 'application/json',
+					  },
+					  body: JSON.stringify(form_dat),
+					})
+					.then(response => response.json())
+					.then(data => {
+					  msg = data['message'];
+					  if (msg === 'success') {
+					  	
+					  		
+					  		sessionStorage.setItem('pta_amt', document.getElementById("pta_amt1").value)
+
+					  		document.getElementById("pta_sem1").value = ""
+					  		document.getElementById("pta_mode1").value = ""
+					  		document.getElementById("pta_cheq1").value = ""
+					  		document.getElementById("pta_amt1").value = ""
+					  		
+					  		return swal({
+										  title: "SUCCESSFUL!",
+										  text: "Payment process successful!",
+										  icon: "success",
+										  button: "OK!",
+										});
+					  		
+					  }else{
+					  	return swal({
+									  title: "Error!",
+									  text: "An error occured, please check and try again",
+									  icon: "error",
+									  button: "OK",
+									});
+					  }
+					})
+					.catch((error) => {
+					  return swal("Oh noes!", "The AJAX request failed!", "error");
+					});
+
+		}
+	})
+	return false;
+}
+
+
+
+</script>
+
+
+		<script type="text/javascript">
+			 
+			$("#nav4").click(function () {
+				pta20 = sessionStorage.getItem("pta_amt")
+				etl20 =  sessionStorage.getItem("etl_amt")
+				
+
+				if (pta20 && etl20) {
+        total = parseFloat(pta20) + parseFloat(etl20)
+        document.getElementById("pta_amt11").innerText = pta20
+				document.getElementById("etl_amt11").innerText = etl20
+			    }
+			    if (pta20 && !etl20) {
+			       total = parseFloat(pta20)
+			       document.getElementById("pta_amt11").innerText = pta20
+						document.getElementById("etl_amt11").innerText = 0
+			    }
+
+			    if (etl20 && !pta20) {
+			       total = parseFloat(etl20)
+			       document.getElementById("pta_amt11").innerText = 0
+							document.getElementById("etl_amt11").innerText = etl20
+			    }
+			    document.getElementById('total11').innerText = total
+			    document.getElementById("waa").style.display = "none"
+			    document.getElementById("waa2").style.display = "block"
+      });
+
+
+
+			
+			 //window.location.href = 'clerk_dashboard.html'
+
+       
+		</script>	
+
+   <script type="text/javascript">
+   
+   
+   	
+	 
+   </script>
+   
+   <script src="../js/jquery-3.6.0.min.js"></script>
+
+
+        <script type="text/javascript">
+            function show(str){
+                document.getElementById('pta1').style.display = 'block';
+
+            }
+            function show2(sign){
+                document.getElementById('etl1').style.display = 'block';
+            }
+        </script>
+
+        <script type="text/javascript">
+            function shows(str){
+                document.getElementById('pta2').style.display = 'block';
+
+            }
+            function shows2(sign){
+                document.getElementById('etl2').style.display = 'block';
+            }
+
+
+        </script>
+
+
+        <script type="text/javascript">
+        	
+  					$(window).load(function(){
+    				$("#nav3").css("background", "#34495E");
+    				$("#nav3").css("color", "white");
+  				});
+
+
+        	$("#nav2").click(function () {
+          $("#pppt").css("display", "none");
+          $("#eeet").css("display","block");
+          $("#nav2").css("background", "#34495E")
+          $("#nav2").css("color", "white")
+          $("#nav3").css("background","");
+          $("#nav3").css("color","black");
+      
+       
+      });
+
+        	$("#nav3").click(function () {
+          $("#pppt").css("display", "block");
+          $("#eeet").css("display","none");
+          $("#nav2").css("background","");
+          $("#nav2").css("color","black");
+          $("#nav3").css("background","#34495E");
+          $("#nav3").css("color", "white")
+      });
+
+      $("#ptta").click(function () {
+      	  $("#eeet").css("display","none");
+          $("#pppt").css("display", "block");
+          
+      
+       
+      });
+
+      $("#ettl").click(function () {
+          $("#pppt").css("display", "none");
+          $("#eeet").css("display","block");
+      
+       
+      });
+
+      $("#inpl").click(function () {
+          $("#pppt").css("display", "block");
+          $("#eeet").css("display","none");
+      
+       
+      });
+
+
+    
+
+
+
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+        </script>   
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+</html>

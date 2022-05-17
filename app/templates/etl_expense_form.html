@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>ETL Expenses Form</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<style type="text/css">
+body{
+
+	height: 100%;
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename = 'images/reg2.jpg')}}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	background-attachment: fixed;
+}
+
+
+.navbar {
+  background-color: #333;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.dropdown {
+  float: left;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: #ABB2B9;
+  border-radius: 5px;
+}
+
+.navbar .kpa:hover{
+  background-color: #3498DB;
+}
+
+.navbar .nn:hover{
+  background-color: transparent;
+}
+.nn{
+   text-decoration: none;
+   margin-left: 1%;
+}
+
+.navbar .n:hover{
+  background-color: transparent;
+}
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
+span {
+	margin-right:0% ;
+	background: transparent;
+	width: 27%;
+}
+span a{
+	margin-right: 4%;
+	padding-left: 5%;
+}
+.kpa{
+	margin-left: 3%;
+	background: transparent;
+	border-radius: 40px;
+}
+.kpa img{
+	height: 40px;
+	width: 40px;
+}
+
+
+ .first ul li{
+		display: inline;
+		float: right;
+		margin-right: 2%;
+	}
+.second ul li{
+       display: inline;
+       margin-right: -2%;
+       padding-left: 2%;
+       margin-left: 4%;
+       margin-top: 3%;
+
+	}
+	.tttable{
+		background: white;
+		height: 100%;
+		width: 40%;
+		border-radius: 5px;
+		font-family: monospace;
+		margin-top: 2%;
+		opacity: 0.7;
+		display: block;
+		margin-left: 30vw;
+		margin-bottom: 2%;
+}
+
+.tttable .sub{
+	height: 2.2em;
+	width: 13vw;
+	margin-top: 2vh;
+	background: #2E4053;
+	color: yellow;
+	border-radius: 5px;
+	margin-left: 13vw;
+}
+.fff input{
+	width: 28vw;
+	height: 2.3em;
+	margin-bottom: 0vh;
+	margin-left: 6vw;
+}
+.fff label{
+	margin-left: 6vw;
+}
+.fff .select{
+	margin-left: 15%;
+	width: 28vw;
+	height: 2.3em;
+}
+
+
+@media(max-width: 900px){
+ 
+ .tttable{
+		background: white;
+		height: 100%;
+		width: 70%;
+		border-radius: 5px;
+		font-family: monospace;
+		margin-top: 2%;
+		opacity: 0.7;
+		display: block;
+		margin-left: 15vw;
+		margin-bottom: 2%;
+}
+
+.tttable .sub{
+	height: 2.2em;
+	width: 20vw;
+	margin-top: 2vh;
+	background: #2E4053;
+	color: yellow;
+	border-radius: 5px;
+	margin-left: 24vw;
+}
+.fff input{
+	width: 58vw;
+	height: 2.3em;
+	margin-bottom: 0vh;
+	margin-left: 6vw;
+}
+.fff .select{
+	margin-left: 6vw;
+	width: 58vw;
+	height: 2.3em;
+}
+.fff label{
+	margin-left: 6vw;
+}
+
+
+}
+
+  .modal1{
+    background: #FDFEFE;
+    height: 17em;
+  }
+
+  .fw-bolds{
+    margin-left: 5em;
+    width: 100%;
+    color: black;
+  }
+
+  .fw-bold{
+    background: #D35400 ;
+    color: white;
+    width: 25%;
+    height: 2.1em;
+    border: 1px solid #D35400;
+    border-radius: 5px;
+  }
+
+  .clss{
+    margin-top: 10%;
+    margin-bottom: 6%;
+    width: 70%;
+    height: 2.3em;
+  }
+
+  @media(max-width: 900px){
+    .fw-bolds{
+    margin-left: 3em;
+    width: 100%;
+    color: black;
+  }
+  }
+
+</style>
+<body>
+
+
+<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			     <a class="navbar-brand kpa" href="#"><img src="{{url_for('static', filename='images/kpasec.png')}}"></a>
+			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+			      <span class="navbar-toggler-icon"></span>
+			    </button>
+			    
+			    <div class="collapse navbar-collapse" id="navbarText">
+			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+			        <li class="nav-item">
+			          <a class="nav-link active " aria-current="page" href="accountant_dashboard.html"id="nav1" style="color:black;">Home</a>
+			        </li>
+			        <li class="nav-item d-flex" >
+		
+			        </li>
+			       <li class="nav-item">
+			          <a class="nav-link active btn" aria-current="page" id="dash" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create-category</a>
+			        </li>
+			      </ul>
+
+
+			      <span class="navbar-text" >
+			      	<a href="" class="nn">{{g.user['fullname']}}</a>
+			      	<a href="{{url_for('users.logout')}}" class="n">Logout</a>
+			      </span>
+			 
+			    </div>
+		 </nav>
+	</header>
+<div class="flash" style="margin-left: 30%; margin-right: 30%; margin-top: 1%; margin-bottom: 1%;">
+          
+  </div>
+
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ">
+    <div class="modal-content modal1" id="modal1">
+      <div class="modal-header">
+     <h5 class="modal-title fw-bolds" id="staticBackdropLabel">Add New Expenses Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="button2"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+          <form id="myForm" name = 'form1' action="" method="POST" autocomplete="off" onsubmit="return sendCategoryData()">
+          	<input type="text" name="" class='clss'placeholder="Enter the new category of expenses" id = 'category2' required>
+          <br>
+          <input type="submit" name="" style = 'margin-top:1%;' class=' fw-bold' id = 'btn11'>
+        </form>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+	   	<div class="tttable" id="cont2">
+   		<h3 class="topp" style="padding-top:4vh; text-align: center; font-family:sans-serif; ">ETL Expenses </h3>
+   		<form method="POST" action="" id="student_data" class="fff" onsubmit = "return sendPTAData()" >
+			<label style="color:green">Details</label><br>
+			<input type="text" name="" id="detail1" required>
+			<br>
+			<label style="text-align:flex-start;color: #2471A3;">Category</label><br>
+			<select required class="select" id='category1'>
+				<option></option>
+			</select>
+			<br>
+			<label style="text-align:flex-start;color: #2471A3;">Mode of Payment</label><br>
+			<select required class='select' id='mode1'>
+				<option></option>
+				<option>CASH</option>
+				<option>MOMO</option>
+				<option>BANK</option>
+			</select>
+			<label style="text-align:flex-start;color: #2471A3;">Semester</label><br>
+			<select required class='select' id='semester1'>
+				<option></option>
+				<option>SEM1</option>
+				<option>SEM2</option>
+			</select>
+			<br>
+			<label style="text-align:flex-start;color: #2471A3;">Quantity</label><br>
+			<input type="text" name="" class='cls' placeholder='5 boxes, 10 units' id = 'quantity1' required><br>
+			<label style="text-align:flex-start;color: #2471A3;">Total Cost</label><br>
+			<input type="text" name="" class='cls' placeholder='5.00' id = 'totalcost1' required>
+			<br>
+			
+			<input type="submit" name="" class="sub">
+		</form><br>
+
+
+
+   	</div>
+
+
+
+
+<script type="text/javascript">
+function sendPTAData () {
+  // (A) GET FORM DATA
+  
+			  
+			  let form_dat = {
+			  	details: document.getElementById("detail1").value,
+			  	category: document.getElementById("category1").value,
+			  	mode: document.getElementById("mode1").value,
+			  	quantity: document.getElementById("quantity1").value,
+			  	amount: document.getElementById("totalcost1").value,
+			  	semester: document.getElementById("semester1").value,
+			  }
+
+			  fetch("http://127.0.0.1:8080/accountant/etl_expenses", {
+					  method: 'POST', // or 'PUT'
+					  headers: {
+					    'Content-Type': 'application/json',
+					  },
+					  body: JSON.stringify(form_dat),
+					})
+					.then(response => response.json())
+					.then(data => {
+					  msg = data['message'];
+					  if (msg === 'success') {
+					  		swal({
+													  title: "SUCCESSFUL!",
+													  text: `${document.getElementById("detail1").value} expense succesfully recorded!`,
+													  icon: "success",
+													  button: "OK!",
+													});
+					  		document.getElementById("detail1").value = ""
+					  		document.getElementById("category1").value = ""
+					  		document.getElementById("mode1").value = ""
+					  		document.getElementById("semester1").value = ""
+					  		document.getElementById("quantity1").value = ""
+					  		document.getElementById("totalcost1").value = ""
+					  }else{
+					  	return swal({
+													  title: "Error!",
+													  text: "Please try again!",
+													  icon: "error",
+													  button: "OK!",
+													});
+					  }
+					})
+					.catch((error) => {
+					  return ('Error:', error);
+					});
+
+					return false;
+				}
+
+
+function sendCategoryData () {
+  // (A) GET FORM DATA
+  
+		  
+		  let form_dat = {
+		  	category: document.getElementById("category2").value
+		  }
+
+		  fetch("http://127.0.0.1:8080/accountant/add_category", {
+				  method: 'POST', // or 'PUT'
+				  headers: {
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify(form_dat),
+				})
+				.then(response => response.json())
+				.then(data => {
+				  msg = data['message'];
+				  if (msg === 'success') {
+				  	swal({
+												  title: "SUCCESSFUL!",
+												  text: `${document.getElementById("category2").value} category succesfully recorded!`,
+												  icon: "success",
+												  button: "OK!",
+												});
+				  		document.getElementById("category2").value = ""
+				  		//location.reload()
+				  }else{
+				  	swal({
+												  title: "Error!",
+												  text: "Please try again!",
+												  icon: "error",
+												  button: "OK!",
+												});
+				  }
+				})
+				.catch((error) => {
+				  return ('Error:', error);
+				});
+
+				return false;
+			}
+
+
+function obtainCategories() {
+	// body...
+
+
+				fetch("http://127.0.0.1:8080/accountant/send_categories")
+					.then(response => response.json())
+					.then(data => {
+					  all_data = data['data'];
+					  let msg = document.getElementById('category1').innerHTML
+					  for (var i = 0; i < all_data.length; i++) {
+					  	msg += `<option>${all_data[i]}</option>`
+					  }
+					  document.getElementById('category1').innerHTML = msg
+					  
+					})
+					.catch((error) => {
+					  return ('Error:', error);
+					});
+	}
+	obtainCategories()
+</script>
+
+
+   	<script src="../js/jquery-3.6.0.min.js"></script>
+   	<script type="text/javascript">
+   		$('#category1').val('')
+   		$('#detail1').val('')
+   		$('#semester1').val('')
+   		$('#mode1').val('')
+   		$('#quantity1').val('')
+   		$('#totalcost1').val('')
+   	</script>
+   	<script type="text/javascript">
+   		function click1() {
+   			$('#cont2').css("display", "none")
+   			swal("Saved!", "", "success");   		}
+   	</script>
+   	<script type="text/javascript">
+   		function click2() {
+   			$('#cont2').css("display", "none")
+   			$('#modal1').css("display", "none")
+   			swal("Saved!", "", "success");   		}
+   	</script>
+   	<script type="text/javascript">
+   		$('#dash').click(function() {
+   			$('#cont2').css("display", "none");
+   		})
+   	</script>
+   	<script type="text/javascript">
+   		$('#button2').click(function() {
+   			$('#cont2').css("display", "block");
+   			$('#modal1').css("display", "block");
+   		})
+   	</script>
+
+
+<script type="text/javascript">
+	if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+</html>
