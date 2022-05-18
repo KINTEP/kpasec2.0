@@ -8,6 +8,16 @@ def generate_student_id(contact, firstname):
     res = str(contact) + firstname
     return res
 
+def promote_student(current_class):
+    index = int(current_class[0])
+    if index < 3:
+        index += 1
+        return str(index) + current_class[1:]
+    else:
+        return False
+
+#print(promote_student(current_class='3A3'))
+
 def add_ids(dict1, idx):
     dict1['id'] = idx
     return dict1

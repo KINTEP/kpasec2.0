@@ -99,6 +99,8 @@ def etl_income(current_user):
 			return jsonify({'message':'error'}), 500
 
 
+
+
 @clerk.route('/donation_income', methods = ['POST'])
 @login_required
 def donation_income(current_user):

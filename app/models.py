@@ -27,6 +27,8 @@ def add_staff(fullname, email, password, role):
 		}
 	db.collection("main").document("staff").collection('STF').document().set(user)
 
+def add_student_archives(stud):
+	db.collection("main").document("student_archives").collection('STD').document().set(stud)
 
 def add_student(firstname, lastname, othername, date_completed, form, parent_phone, phone, idx, clerk, etl, pta, cha, status=1):
 	today = datetime.utcnow()
@@ -40,6 +42,7 @@ def add_student(firstname, lastname, othername, date_completed, form, parent_pho
 	'parent_phone': parent_phone,
 	'phone': phone,
 	'student_id': idx,
+	'class': form[0],
 	'status': status,
 	'date_completed': date_completed,
 	'etl_payment': etl,
@@ -236,7 +239,6 @@ def student_ledger(idx):
 		stud = stud.to_dict()
 		etl_pmt = stud['etl_payment']
 		pta_pmt = stud['pta_payment']
-		print(etl_pmt)
 		if type(etl_pmt) == list:
 			etl_pmt = [change_category(dict1=d1, kind='etl') for d1 in etl_pmt]
 		else:
@@ -352,6 +354,17 @@ def get_balance(obj):
 	return False
 
 
+def promote_all_students():
+	res = db.collection("main").document("students").collection('STD').get()
+	idxs = [i.id for i in res]
+	dict_data = [i.to_dict() for i in res]
+	for i in range(len(res)):
+		form = dict_data[i]['form']
+		new_cls = promote_student(form)
+		if new_cls:
+			idx = idxs[i]
+			db.collection("main").document("students").collection('STD').document(idx).update({"form": new_cls, "class": new_cls[0]})
+
 ##
 
 
@@ -377,5 +390,12 @@ def get_user(user_id):
 def delete_class(cls_id):
 	db.collection("main").document("student_classes").collection('CLS').document(cls_id).delete()
 
+def final_students(form=3):
+	stud = db.collection("main").document("students").collection('STD').where("class", "==", str(form)).get()
+	idxs = [i.id for i in stud]
+	data = [i.to_dict() for i in stud]
+	[add_student_archives(i) for i in data]
+	[db.collection("main").document("students").collection('STD').document(i).delete() for i in idxs]
+	return len(stud), True
 
-
+##print()

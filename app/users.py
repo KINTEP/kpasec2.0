@@ -5,8 +5,8 @@ from app import bcrypt
 
 users = Blueprint('users', __name__, url_prefix = '/users')
 
-#hash_password = bcrypt.generate_password_hash("kuminewton").decode("utf-8")
-#add_staff(fullname="Kumi Isaac", email="kuminewton@gmail.com", password=hash_password, role=1)
+#hash_password = bcrypt.generate_password_hash("paultengey").decode("utf-8")
+#add_staff(fullname="Paul Tengey", email="paultengey@gmail.com", password=hash_password, role=2)
 
 @users.route('/register_staff', methods = ['POST', 'GET'])
 def register_staff():
@@ -35,8 +35,13 @@ def login_staff():
 			staff_pass = staff[0].to_dict().get('password')
 			if bcrypt.check_password_hash(staff_pass, password):
 				session['user_id'] = staff_id
+				role = staff[0].to_dict().get('role')
+				session['role'] = role
 				next_page = request.args.get('next')
-				return redirect(next_page) if next_page else redirect(url_for('accountant.dashboard_stats'))
+				if role == 1:
+					return redirect(next_page) if next_page else redirect(url_for('accountant.dashboard_stats'))
+				if role == 2:
+					return redirect(next_page) if next_page else redirect(url_for('clerk.dashboard_stats'))
 			else:
 				return redirect(url_for('users.login_staff'))
 		else:

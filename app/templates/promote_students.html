@@ -17,7 +17,7 @@
 body{
 
 	height: 100%;
-	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("../../images/reg2.jpg");
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static',filename='images/reg2.jpg')}}");
 	background-size: cover;
 	background-repeat: no-repeat;
 	overflow: hidden;
@@ -705,7 +705,7 @@ span a{
 <header>
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			     <a class="navbar-brand kpa" href="#"><img src="../../images/kpasec.png"></a>
+			     <a class="navbar-brand kpa" href="#"><img src="{{url_for('static', filename='images/kpasec.png')}}"></a>
 			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
 			      <span class="navbar-toggler-icon"></span>
 			    </button>
@@ -713,7 +713,7 @@ span a{
 			    <div class="collapse navbar-collapse" id="navbarText">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active " aria-current="page" href="accountant_dashboard.html"id="nav1" style="color:black;">Home</a>
+			          <a class="nav-link active " aria-current="page" href="{{url_for('accountant.dashboard_stats')}}"id="nav1" style="color:black;">Home</a>
 			        </li>
 			        
 			      </ul>
@@ -733,10 +733,13 @@ span a{
  <div class="cont3" id="cont3">
  	<form>
  		<center><h3>Promote Student Portal</h3></center>
- 		<p>Hello Mr. {{current_user.username}}, you are about to promote all the students to next class. Please click the button just ones and wait for the alert</p>
- 		<center><a href="{{url_for('accountant_dashboard')}}" class="wed">Cancel</a>
- 		<a role="button" class="wedd" id="button">Promote</a>
-
+ 		<p>Hello Mr. {{g.user.get('fullname')}}, you are about to promote all the students to next class. Please click the button just ones and wait for the alert</p>
+ 		<center><a href="{{url_for('accountant.dashboard_stats')}}" class="wed">Cancel</a>
+ 		<a role="button" class="wedd" id="button" onclick="promoteStudents()">Promote</a>
+ 		<br>
+ 		<div class="" style="margin-top: 3%;">
+ 		<a role="button" class="wedd" id="button2" onclick="moveStudents()" >Archive</a>
+ 		</div>
  	  </center>
  	</form><br>
 
@@ -754,29 +757,107 @@ span a{
 		}
 </script>
 <script>
-function	settings() {
-				$(document).ready(function(){
-				  $("#button").click(function(){
-				    $.ajax({url: "/accountant_dashboard/promote_students", 
-				    	success: function(result){
-				    	res1 = result['data']
+function promoteStudents() {
+						 let form_dat = {
+						  	promote: 'promote',
+														}
 
-				    	if (res1 == 'successfully'){
-				    		$("#cont3").css("display", "none");
-				    		swal("All students "+res1+" Promoted!", "", "success");
-				    		window.location.href = "{{url_for('accountant_dashboard')}}"
+					swal({
+						title: 'PROMOTION WARNING!',
+						text: `Please be sure you want to promote students because this process is irreversible!`,
+						icon: 'warning',
+						buttons: [true, "Confirm"],
+						dangerMode: true,
+					}).then((isOkay) => {
+						if (isOkay){
+											
+									fetch("http://127.0.0.1:8080/accountant/promote_students", {
+										  method: 'POST', // or 'PUT'
+										  headers: {
+										    'Content-Type': 'application/json',
+										  },
+										  body: JSON.stringify(form_dat),
+										})
+										.then(response => response.json())
+										.then(data => {
+										  msg = data['message'];
+										  if (msg === 'success') {
+										  		swal({
+														  title: "SUCCESSFUL!",
+														  text: `All students successfully promoted!`,
+														  icon: "success",
+														  button: "OK!",
+														});
+										  		
+										  }else{
+										  	return swal({
+														  title: "Error!",
+														  text: "Please try again!",
+														  icon: "error",
+														  button: "OK!",
+														});
+										  }
+										})
+										.catch((error) => {
+										  return ('Error:', error);
+										});
 
-				    	}
-				    	else{
-				    		swal(res1+"!", "", "warning"); 
-				    	}
-				      //$("#div1").html(result);
-				    }});
-				  });
-				});
-		}
+						}
+					})
+					return false;
+				}
+</script>
+<script type="text/javascript">
+	function moveStudents() {
+						 let form_dat = {
+						  	message: 'move',
+														}
 
-settings()
+					swal({
+						title: 'ARCHIVES WARNING!',
+						text: `Please be sure you want to move the form 3 students to archives because this process is irreversible!`,
+						icon: 'warning',
+						buttons: [true, "Confirm"],
+						dangerMode: true,
+					}).then((isOkay) => {
+						if (isOkay){
+											
+									fetch("http://127.0.0.1:8080/accountant/archive_student", {
+										  method: 'POST', // or 'PUT'
+										  headers: {
+										    'Content-Type': 'application/json',
+										  },
+										  body: JSON.stringify(form_dat),
+										})
+										.then(response => response.json())
+										.then(data => {
+										  msg = data['message'];
+										  num = data['data']
+										  if (msg === 'success') {
+										  		swal({
+														  title: "SUCCESSFUL!",
+														  text: `${num} form 3 students successfully moved to archives!`,
+														  icon: "success",
+														  button: "OK!",
+														});
+										  		
+										  }else{
+										  	return swal({
+														  title: "Error!",
+														  text: "Please try again!",
+														  icon: "error",
+														  button: "OK!",
+														});
+										  }
+										})
+										.catch((error) => {
+										  return ('Error:', error);
+										});
+
+						}
+					})
+					return false;
+				}
 </script>
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

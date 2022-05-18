@@ -91,7 +91,6 @@ def ledger_results(current_user):
 def debtors_list(current_user):		
 	form = request.args.get('form')
 	list1 = get_debtors_list(form=form)
-	print(list1[0])
 	template = render_template('debtors_list.html', list1=list1, form=form)
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
@@ -219,15 +218,37 @@ def update_doc(item, new_data):
 	id1 = item.id
 	db.collection("main").document("students").collection('STD').document(id1).update({"charge": firestore.ArrayUnion([new_data])})
 
-@accountant.route('/promote_students', methods = ['POST'])
+@accountant.route('/promote_students', methods = ['POST', 'GET'])
 @login_required
 def promote_students(current_user):
-	message = request.form.get('promote')
-	if message['message'] == 'promote':
-		promote__all_students()
-		return jsonify({'message': 'success'}), 200
-	else:
-		return jsonify({'message': 'error'}), 500
+	if request.method == "POST":
+		json_data = request.get_json()
+		message = json_data.get('promote')
+		if message == 'promote':
+			try:
+				promote_all_students()
+				return jsonify({'message': 'success'}), 200
+			except:
+				return jsonify({'message': 'error1'})
+		else:
+			return jsonify({'message': 'error'}), 500
+	return render_template("promote_students.html")
+
+
+@accountant.route('/archive_student', methods = ['POST'])
+@login_required
+def archive_student(current_user):
+	if request.method == "POST":
+		json_data = request.get_json()
+		message = json_data.get('message')
+		if message == 'move':
+			try:
+				final = final_students()[0]
+				return jsonify({'message': 'success', 'data': final})
+			except:
+				return jsonify({'message': 'error'})
+		return jsonify({'message': 'error'})
+
 	
 @accountant.route('/other_business', methods = ['POST'])
 @login_required
@@ -311,7 +332,6 @@ def pta_cash_payment(current_user):
 @accountant.route('/dashboard_stats', methods = ['POST', 'GET'])
 @login_required
 def dashboard_stats(current_user):
-	print(session)
 	etl1 = get_etl_income_today()
 	etl_amt = [float(res['amount']) for res in etl1]
 	pta1 = get_pta_income_today()
@@ -390,6 +410,7 @@ def delete_student_class(current_user):
 		delete_class(cls_id)
 		return jsonify({'message': 'success'})
 
+
 @accountant.route('/get_student_classes')
 @login_required
 def get_student_classes(current_user):
@@ -400,3 +421,4 @@ def get_student_classes(current_user):
 	
 	send = {'data': data}
 	return jsonify(send), 200
+
