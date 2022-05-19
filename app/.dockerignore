@@ -1,0 +1,8 @@
+  GNU nano 5.4                                                                   .dockerignore                                                                            
+Dockerfile
+README.md
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+.pytest_cache
