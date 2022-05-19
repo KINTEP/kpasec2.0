@@ -28,7 +28,6 @@ def reports(current_user):
 		end = get_date2(end1)
 		report_data['start'] = start
 		report_data['end'] = end
-		print(report_data)
 		return redirect(url_for('accountant.etl_cash_receipt')), 200
 		
 
@@ -64,8 +63,6 @@ def ledger_results(current_user):
 	stud_id = session.get('ledger_id')
 	check = get_one_student(stud_id)
 	etl, pta = student_ledger(stud_id)
-	print(etl)
-	print(pta)
 	etll = [float(res['amount']) if res['cat'] == 'etl' else -float(res['amount']) for res in etl]
 	ptaa = [float(res['amount']) if res['cat'] == 'pta' else -float(res['amount']) for res in pta]
 	check1 = check.to_dict()
@@ -200,7 +197,6 @@ def begin_semester(current_user):
 		date = dt.date(year=int(start[:4]), month = int(start[5:7]), day = int(start[8:]))
 		date2 = dt.datetime(int(start[:4]), int(start[5:7]), int(start[8:]), 0, 0)
 		new_data = {'date':get_date3(date2), 'pta': etl, 'etl':pta}
-		
 		try:
 			add_charge(clerk=g.user.get("fullname"), start=start, sem=sem, pta=pta, etl=etl)
 			res = db.collection("main").document("students").collection('STD').get()
@@ -328,6 +324,81 @@ def pta_cash_payment(current_user):
 	return response
 
 
+@accountant.route('/etl_income_and_expenditure')
+@login_required
+def etl_income_and_expenditure(current_user):
+	start = report_data.get('start')
+	end = report_data.get('end')
+	
+	#Balance b/f
+
+	dues0 = get_etl_cash_receipt_bal(start=start)
+	dues0 = sum([float(i.get('amount')) for i in dues0])
+	exxp = get_etl_cash_payment_bal(start=start)
+	exp0 = sum([float(i.get('total')) for i in exxp])
+	other0 = get_other_cash_receipt_bal(start=start)
+	other0 = sum([float(i.get('amount')) for i in other0])
+	profit0 = other0 + dues0 - exp0
+	#Current data
+	dues = get_etl_cash_receipt(start, end)
+	dues1 = sum([float(i.get('amount')) for i in dues])
+	other1 = get_other_cash_receipt(start=start, end=end)
+	other1 = sum([float(i.get('amount')) for i in other1])
+	exxp1 = get_etl_cash_payment(start=start, end=end)
+	exp1 = sum([float(i.get('total')) for i in exxp1])
+	
+	cats = list(set([i['category'] for i in exxp1]))
+	data = {val1: [i for i in res if i['category'] == val1] for val1 in cats}
+	totals = {val1: sum([float(i['total']) for i in res if i['category'] == val1]) for val1 in cats}
+	
+	#Total
+	total1 = dues1 + other1 + profit0
+	profit1 = total1 - exp1
+	start = get_date_back(f1=start)
+	end = get_date_back(f1=end)
+	template = render_template('etl_income_and_expenditure.html', start=start, end=end, dues1=dues1, other1=other1, total1=total1, profit0=profit0, profit1=profit1, data=data, totals=totals)
+	response = make_response(template)
+	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
+	return response
+
+
+@accountant.route('/pta_income_and_expenditure')
+@login_required
+def pta_income_and_expenditure(current_user):
+	start = report_data.get('start')
+	end = report_data.get('end')
+	
+	#Balance b/f
+
+	dues0 = get_pta_cash_receipt_bal(start=start)
+	dues0 = sum([float(i.get('amount')) for i in dues0])
+	exxp = get_pta_cash_payment_bal(start=start)
+	exp0 = sum([float(i.get('total')) for i in exxp])
+	other0 = get_other_cash_receipt_bal(start=start)
+	other0 = sum([float(i.get('amount')) for i in other0])
+	profit0 = other0 + dues0 - exp0
+	#Current data
+	dues = get_pta_cash_receipt(start, end)
+	dues1 = sum([float(i.get('amount')) for i in dues])
+	other1 = get_other_cash_receipt(start=start, end=end)
+	other1 = sum([float(i.get('amount')) for i in other1])
+	exxp1 = get_pta_cash_payment(start=start, end=end)
+	exp1 = sum([float(i.get('total')) for i in exxp1])
+	
+	cats = list(set([i['category'] for i in exxp1]))
+	data = {val1: [i for i in res if i['category'] == val1] for val1 in cats}
+	totals = {val1: sum([float(i['total']) for i in res if i['category'] == val1]) for val1 in cats}
+	
+	#Total
+	total1 = dues1 + other1 + profit0
+	profit1 = total1 - exp1
+	start = get_date_back(f1=start)
+	end = get_date_back(f1=end)
+	template = render_template('pta_income_and_expenditure.html', start=start, end=end, dues1=dues1, other1=other1, total1=total1, profit0=profit0, profit1=profit1, data=data, totals=totals)
+	response = make_response(template)
+	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
+	return response
+
 
 @accountant.route('/dashboard_stats', methods = ['POST', 'GET'])
 @login_required
@@ -377,11 +448,7 @@ def daily_reports(current_user):
 	pta2 = [remove_all_keys(d,['semester', 'clerk', 'date']) for d in pta1]
 	pta3 = [change_date(res) for res in pta2]
 	pta3 = pta3[::-1]
-	data = {
-		'pta': pta3,
-		'etl': etl3,
-		
-			}
+	data = {'pta': pta3, 'etl': etl3}
 	s1 = sum([float(i['amount']) for i in etl3])
 	s2 = sum([float(i['amount']) for i in pta3])
 	template = render_template('daily_report.html', data=data, etl_total=s1, pta_total=s2)

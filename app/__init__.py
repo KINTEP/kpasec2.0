@@ -8,7 +8,7 @@ from datetime import timedelta
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.config['SECRET_KEY'] = '617657yaghjaghaj'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 CORS(app)
 
 

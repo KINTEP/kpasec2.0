@@ -355,7 +355,7 @@ function sendPTAData () {
 			  	semester: document.getElementById("semester1").value,
 			  }
 
-			  fetch("http://127.0.0.1:8080/accountant/etl_expenses", {
+			  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/etl_expenses", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',
@@ -403,7 +403,7 @@ function sendCategoryData () {
 		  	category: document.getElementById("category2").value
 		  }
 
-		  fetch("http://127.0.0.1:8080/accountant/add_category", {
+		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/add_category", {
 				  method: 'POST', // or 'PUT'
 				  headers: {
 				    'Content-Type': 'application/json',
@@ -443,7 +443,7 @@ function obtainCategories() {
 	// body...
 
 
-				fetch("http://127.0.0.1:8080/accountant/send_categories")
+				fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/send_categories")
 					.then(response => response.json())
 					.then(data => {
 					  all_data = data['data'];

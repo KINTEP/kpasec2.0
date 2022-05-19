@@ -1,6 +1,6 @@
 import datetime as dt
 from datetime import datetime as df
-import math
+import random
 import time
 
 def generate_student_id(contact, firstname):
@@ -65,7 +65,7 @@ def generate_receipt_no():
         newf = open(name, "a")
     y1 = str(dt.datetime.now().year) + str(dt.datetime.now().month)
     name = r"C:/Users/user/Desktop/kpasec201/app/number.txt"
-    rand = math.random.randint(10000, 100000)
+    rand = random.randint(10000, 100000)
     newf = open(name, "a")
     file = open(name, "r")
     idx = y1+str(rand)

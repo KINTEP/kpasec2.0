@@ -279,7 +279,7 @@ span a{
 function getEtlData () {
 		  // (A) GET FORM DATA
 
-		  fetch("http://127.0.0.1:8080/accountant/get_all_etl_expenses")
+		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/get_all_etl_expenses")
 				.then(response => response.json())
 				.then(data => {
 				  all_data = data['data'];

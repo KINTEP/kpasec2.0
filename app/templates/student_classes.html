@@ -367,7 +367,7 @@ function sendClassData () {
 				  	form: document.getElementById("class1").value,
 				  }
 
-				  fetch("http://127.0.0.1:8080/accountant/add_class", {
+				  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/add_class", {
 						  method: 'POST', // or 'PUT'
 						  headers: {
 						    'Content-Type': 'application/json',
@@ -408,7 +408,7 @@ function sendClassData () {
 	function getClassData () {
 		  // (A) GET FORM DATA
 
-		  fetch("http://127.0.0.1:8080/accountant/get_student_classes")
+		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/get_student_classes")
 				.then(response => response.json())
 				.then(data => {
 				  all_data = data['data'];
@@ -462,7 +462,7 @@ function deleteForm(element) {
 					if (isOkay){
 										
 							
-						fetch("http://127.0.0.1:8080/accountant/delete_student_class", {
+						fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/delete_student_class", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',

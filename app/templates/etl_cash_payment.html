@@ -19,7 +19,7 @@
 body{
 
 	height: 100%;
-	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename='images/reg2.jpg')");
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename='images/reg2.jpg')}}");
 	background-size: cover;
 	background-repeat: no-repeat;
 	overflow-y: scroll;
@@ -279,7 +279,7 @@ span a{
 function getEtlData () {
 		  // (A) GET FORM DATA
 
-		  fetch("http://127.0.0.1:8080/accountant/get_all_etl_expenses")
+		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/get_all_etl_expenses")
 				.then(response => response.json())
 				.then(data => {
 				  all_data = data['data'];

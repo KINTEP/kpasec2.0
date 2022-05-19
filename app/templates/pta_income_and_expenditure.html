@@ -16,7 +16,7 @@
 body{
 
 	height: 100%;
-	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("../../images/reg2.jpg");
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename='images/reg2.jpg')}}");
 	background-size: cover;
 	background-repeat: no-repeat;
 	overflow-y: scroll;
@@ -149,7 +149,7 @@ span a{
     body{
 
 	height: 100%;
-	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("../../images/reg2.jpg");
+	background-image: linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url("{{url_for('static', filename='images/reg2.jpg')}}");
 	background-size: cover;
 	background-repeat: no-repeat;
 	overflow-y: scroll;
@@ -186,7 +186,7 @@ span a{
 
 	<header>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			     <a class="navbar-brand kpa" href="#"><img src="../../images/kpasec.png"></a>
+			     <a class="navbar-brand kpa" href="#"><img src="{{url_for('static',filename='images/kpasec.png')}}"></a>
 			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
 			      <span class="navbar-toggler-icon"></span>
 			    </button>
@@ -204,7 +204,8 @@ span a{
 
 			      <span class="navbar-text" >
 			      	<a href="" class="nn">{{g.user['fullname']}}</a>
-			      	<a href="{{url_for('users.logout')}}" class="n">Logout</a>			      </span>
+			      	<a href="{{url_for('users.logout')}}" class="n">Logout</a>
+			      </span>
 			 
 			    </div>
 		 </nav>
@@ -235,15 +236,15 @@ span a{
 					<td></td>
 					<td>Balance b/d</td>
 					<td></td>
-					<td></td>
+					<td>{{profit0}}</td>
 					<td></td>
 				</tr>
 				
 				<tr>
 					<td></td>
-					<td>Dues</td>
+					<td>Dues & Donation</td>
 					<td></td>
-					<td></td>
+					<td>{{dues1}}</td>
 					<td></td>
 				</tr>
 
@@ -251,15 +252,15 @@ span a{
 					<td></td>
 					<td>Other Businesses</td>
 					<td></td>
-					<td></td>
+					<td>{{other1}}</td>
 					<td></td>
 				</tr>
 				<tr>
 					<td></td>
-					<td class="fw-bold">Total Income</td>
+					<td class="fw-bold text-success">Total Income</td>
 					<td></td>
 					<td></td>
-					<td class="fw-bold"></td>
+					<td class="fw-bold text-success">{{total1}}</td>
 				</tr>
 
 				<tr>
@@ -269,30 +270,49 @@ span a{
 					<th>(GHC)</th>
 					<th>(GHC)</th>
 				</tr>
-			
+			{% for key, val in data.items() %}
+				{% set mainloop = loop %}
 				<tr>
-					<td>1</td>
-					<td class="fw-bold text-danger">Admin Expenses</td>
+					<td class="fw-bold">{{mainloop.index}}</td>
+					<td class="fw-bold text-danger">{{key.capitalize()}} Expense</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
-				
+				{% for exp in val %}
 				<tr>
-					<td>1</td>
-					<td class="fw-bold">Chairs</td>
-					<td>n1</td>
-					<td>100</td>
-					<td class="fw-bold">100</td>
+					<td class="text-danger"></td>
+					<td class="fw-">{{exp['detail']}}</td>
+					<td>{{loop.index}}</td>
+					<td>{{exp['total']}}</td>
+					<td class="fw-bold"></td>
 				</tr>
-
-
+				{% endfor %}
+				<tr>
+					<td class="text-danger"></td>
+					<td class="fw-bold">Total {{key.capitalize()}} Expenses</td>
+					<td></td>
+					<td></td>
+					<td class="fw-bold">{{totals[key]}}</td>
+				</tr>
+			{% endfor %}
+			<tr>
+					<td></td>
+					<td class="fw-bold"><span class="text-success"></span><span class="text-danger"></span></td>
+					<td></td>
+					<td></td>
+					<td class="fw-bold text-danger"></td>
+				</tr>
 				<tr>
 					<td></td>
 					<td class="fw-bold"><span class="text-success">NET SURPLUS</span>(<span class="text-danger">DEFICIT</span>)</td>
 					<td></td>
 					<td></td>
-					<td class="fw-bold text-danger"></td>
+					{% if profit1 < 0 %}
+					<td class="fw-bold text-danger">{{profit1}}</td>
+					{% else %}
+					<td class="fw-bold text-success">{{profit1}}</td>
+					{% endif %}
 				</tr>
 			</table><br><br>
 		</div><br><br>

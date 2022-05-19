@@ -1089,7 +1089,7 @@ span a{
 <script type="text/javascript">
 function obtainClasses() {
 	
-				fetch("http://127.0.0.1:8080/accountant/get_student_classes")
+				fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/get_student_classes")
 						.then(response => response.json())
 						.then(data => {
 						  all_data = data['data'];
@@ -1127,7 +1127,7 @@ function sendReportData () {
 
 			  }
 
-			  fetch("http://127.0.0.1:8080/accountant/reports", {
+			  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/reports", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',
@@ -1153,6 +1153,14 @@ function sendReportData () {
 
 					  	if (report === 'CASH PAYMENT' && type === 'PTA'){
 					  		window.location.href = "pta_cash_payment"
+					  	}
+
+					  	if (report === 'INCOME AND EXPENDITURE' && type === 'ETL') {
+					  		window.location.href = "etl_income_and_expenditure"
+					  	}
+
+					  	if (report === 'INCOME AND EXPENDITURE' && type === 'PTA') {
+					  		window.location.href = "pta_income_and_expenditure"
 					  	}
 					  	document.getElementById("start").value = ""
 					  	document.getElementById("end").value = ""
@@ -1187,7 +1195,7 @@ function sendOtherIncomeData () {
 
 			  }
 
-			  fetch("http://127.0.0.1:8080/accountant/other_business", {
+			  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/other_business", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',
@@ -1233,7 +1241,7 @@ function sendClassData () {
 function getStatsData () {
   // (A) GET FORM DATA
 
-		  fetch("http://127.0.0.1:8080/accountant/dashboard_stats")
+		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/dashboard_stats")
 				.then(response => response.json())
 				.then(data => {
 				  all_data = data['data']

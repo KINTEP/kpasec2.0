@@ -258,7 +258,7 @@ span a{
 function getDebtorsData () {
 		  // (A) GET FORM DATA
 
-		  fetch("http://127.0.0.1:8080/accountant/show_all_debtors")
+		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/show_all_debtors")
 				.then(response => response.json())
 				.then(data => {
 				  all_data = data['data']['debtors'];

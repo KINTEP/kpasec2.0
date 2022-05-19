@@ -302,11 +302,32 @@ def get_etl_cash_receipt(start, end):
 	res2 = [i.to_dict() for i in res]
 	return res2
 
+def get_etl_cash_receipt_bal(start):
+	res = db.collection("main").document("etl_income").collection('ETL').where("date2", "<", start).get()
+	res2 = [i.to_dict() for i in res]
+	return res2
+
+def get_pta_cash_receipt_bal(start):
+	res = db.collection("main").document("etl_income").collection('ETL').where("date2", "<", start).get()
+	res2 = [i.to_dict() for i in res]
+	return res2
+
 def get_pta_cash_receipt(start, end):
 	res = db.collection("main").document("pta_income").collection('PTA').where("date2", ">=", start).where("date2", "<=", end).get()
 	res2 = [i.to_dict() for i in res]
 	return res2
 
+def get_other_cash_receipt(start, end):
+	res = db.collection("main").document("other_income").collection('OTH').where("date2", ">=", start).where("date2", "<=", end).get()
+	res2 = [i.to_dict() for i in res]
+	return res2
+
+def get_other_cash_receipt_bal(start):
+	res = db.collection("main").document("other_income").collection('OTH').where("date2", "<", start).get()
+	res2 = [i.to_dict() for i in res]
+	return res2
+
+#db.collection("main").document("other_income").collection('OTH').document().set(oth)
 
 def get_etl_cash_payment(start, end):
 	res = db.collection("main").document("etl_expense").collection('ETL').where("date2", ">=", start).where("date2", "<=", end).get()
@@ -315,6 +336,16 @@ def get_etl_cash_payment(start, end):
 
 def get_pta_cash_payment(start, end):
 	res = db.collection("main").document("pta_expense").collection('PTA').where("date2", ">=", start).where("date2", "<=", end).get()
+	res2 = [i.to_dict() for i in res]
+	return res2
+
+def get_pta_cash_payment_bal(start):
+	res = db.collection("main").document("pta_expense").collection('PTA').where("date2", "<", start).get()
+	res2 = [i.to_dict() for i in res]
+	return res2
+
+def get_etl_cash_payment_bal(start):
+	res = db.collection("main").document("etl_expense").collection('ETL').where("date2", "<", start).get()
 	res2 = [i.to_dict() for i in res]
 	return res2
 
@@ -382,6 +413,18 @@ def get_user(user_id):
 #print(res[0].to_dict())
 
 
+
+
+res = get_etl_cash_payment(1651363200.0, 1652918400.0)
+cats = list(set([i['category'] for i in res]))
+list1 = []
+for val in cats:
+	d = {val: [i for i in res if i['category'] == val]}
+	list1.append(d)
+
+d1 = {val1: [i for i in res if i['category'] == val1] for val1 in cats}
+print(d1)
+print(len(d1))
 
 
 

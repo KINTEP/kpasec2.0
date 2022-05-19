@@ -263,7 +263,7 @@ span a{
 				{% for stud in list1 %}
    			<tr>
 					  <td>{{loop.index}}</td>
-					  <td class="fom">{{stud['form']}}</td>
+					  <td class="fom">{{stud['parent_phone']}}</td>
 					  <td>{{stud['lastname'] + " " + stud['firstname']}}</td>
 					  <td>
 					  	<form method="POST" onsubmit="return sendData(this)">
@@ -324,7 +324,7 @@ span a{
 		  	pay_id: idx
 		  }
 
-		  fetch("http://127.0.0.1:8080/clerk/get_pay_data", {
+		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/get_pay_data", {
 				  method: 'POST', // or 'PUT'
 				  headers: {
 				    'Content-Type': 'application/json',

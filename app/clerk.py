@@ -58,7 +58,7 @@ def pta_income(current_user):
 		if number:
 			tx_id = number
 		else:
-			tx_id = 'taaghag'#generate_receipt_no()
+			tx_id = generate_receipt_no()
 		try:
 			add_pta_income(clerk=g.user.get("fullname"), amount=amount, tx_id=tx_id, sem=semester, mode=mode, 
 				cat='PTA', payer=student_id, name=name, form=form)
@@ -86,7 +86,7 @@ def etl_income(current_user):
 		if number:
 			tx_id = number
 		else:
-			tx_id = 'taaghag'#generate_receipt_no()
+			tx_id = generate_receipt_no()
 		try:
 			add_etl_income(clerk=g.user.get("fullname"), amount=amount, tx_id=tx_id, sem=semester, mode=mode, 
 				cat='ETL', payer=student_id, name=name, form=form)
@@ -111,7 +111,7 @@ def donation_income(current_user):
 		semester = json_data.get('semester')
 		amount = json_data.get('amount')
 		phone = json_data.get('phone')
-		tx_id = '172771'
+		tx_id = generate_receipt_no()
 		try:
 			add_donation(clerk=g.user.get("fullname"), amount=amount, tx_id=tx_id, sem=semester, 
 			mode=mode, cat='donation', phone=phone, name=name)
