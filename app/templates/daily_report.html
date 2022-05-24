@@ -436,7 +436,7 @@ input {
 	function getTableData () {
   // (A) GET FORM DATA
 
-  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/daily_reports")
+  fetch("/clerk/daily_reports")
 		.then(response => response.json())
 		.then(data => {
 		  all_data = data['data'];

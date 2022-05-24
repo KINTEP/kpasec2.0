@@ -979,7 +979,7 @@ span a{
 	}).then((isOkay) => {
 		if (isOkay){
 							
-					fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/donation_income", {
+					fetch("/clerk/donation_income", {
 						  method: 'POST', // or 'PUT'
 						  headers: {
 						    'Content-Type': 'application/json',
@@ -1052,7 +1052,7 @@ function sendData(form) {
 							
 					
 
-						  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/register_student", {
+						  fetch("/clerk/register_student", {
 								  method: 'POST', // or 'PUT'
 								  headers: {
 								    'Content-Type': 'application/json',
@@ -1118,7 +1118,7 @@ function sendData(form) {
   	phone: document.getElementById("phone").value
   }
 
-  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/register_student", {
+  fetch("/clerk/register_student", {
 		  method: 'POST', // or 'PUT'
 		  headers: {
 		    'Content-Type': 'application/json',
@@ -1168,7 +1168,7 @@ function sendData(form) {
   	parent_phone: document.getElementById("p_phone1").value,
   }
 
-  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/search_student", {
+  fetch("/clerk/search_student", {
 		  method: 'POST', // or 'PUT'
 		  headers: {
 		    'Content-Type': 'application/json',
@@ -1213,7 +1213,7 @@ function obtainStudentClasses() {
 	// body...
 
 
-	fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/get_student_classes")
+	fetch("/clerk/get_student_classes")
 		.then(response => response.json())
 		.then(data => {
 		  all_data = data['data'];
@@ -1238,7 +1238,7 @@ obtainStudentClasses()
 function getStatsData () {
   // (A) GET FORM DATA
 
-  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/dashboard_stats")
+  fetch("/clerk/dashboard_stats")
 		.then(response => response.json())
 		.then(data => {
 		  all_data = data['data']

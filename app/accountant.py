@@ -3,7 +3,7 @@ from .helpers import *
 from .models import *
 import datetime as dt
 from itertools import accumulate
-from app import login_required
+from app import login_required, date_format
 
 accountant = Blueprint('accountant', __name__, url_prefix = '/accountant')
 
@@ -57,31 +57,41 @@ def search_ledger(current_user):
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
 	return response
 
-@accountant.route('/ledger_results')
+@accountant.route('/ledger_results', methods=['GET', 'POST'])
 @login_required
 def ledger_results(current_user):
-	stud_id = session.get('ledger_id')
-	check = get_one_student(stud_id)
-	etl, pta = student_ledger(stud_id)
+	doc_id = request.args.get('idx')
+	#stud_id = session.get('ledger_id')
+	check = get_student_by_doc(doc_id)
+	etl, pta = student_ledger(doc_id)
 	etll = [float(res['amount']) if res['cat'] == 'etl' else -float(res['amount']) for res in etl]
 	ptaa = [float(res['amount']) if res['cat'] == 'pta' else -float(res['amount']) for res in pta]
-	check1 = check.to_dict()
+	check1 = check
 	data = {
-			'pta': pta,
-			'etl': etl,
-			'fullname': check1.get('lastname') + " " + check1.get('firstname'),
-			'form': check1.get('form'),
-			'phone': check1.get('parent_phone'),
-			'pta_cum': list(accumulate(ptaa)),
-			'etl_cum': list(accumulate(etll)),
-			'etl_tot': sum([float(i['amount']) for i in etl]),
-			'pta_tot': sum([float(i['amount']) for i in pta])
-			}
+				'pta': pta,
+				'etl': etl,
+				'fullname': check1.get('lastname') + " " + check1.get('firstname'),
+				'form': check1.get('form'),
+				'phone': check1.get('parent_phone'),
+				'pta_cum': list(accumulate(ptaa)),
+				'etl_cum': list(accumulate(etll)),
+				'etl_tot': sum([float(i['amount']) for i in etl]),
+				'pta_tot': sum([float(i['amount']) for i in pta])
+				}
 	template = render_template('ledger_result.html', data=data)
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
 	return response
 		
+@accountant.route('/student_by_doc', methods = ['POST', 'GET'])
+@login_required
+def student_by_doc(current_user):		
+	idx = request.args.get('idx')
+	students = get_student_by_doc(idx)
+	if type(students['dob']) == float:
+		students['dob'] = get_date_back(students['dob'])
+	return jsonify({'message': 'success', 'data': students})
+
 
 @accountant.route('/debtors_list', methods = ['POST', 'GET'])
 @login_required
@@ -93,6 +103,17 @@ def debtors_list(current_user):
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
 	return response, 200
 		
+@accountant.route('/all_students', methods = ['POST', 'GET'])
+@login_required
+def all_students(current_user):		
+	form = request.args.get('form')
+	students = get_all_student_list(form=form)
+	#print(students[0]['phone'])
+	template = render_template('all_students.html', students=students, form=form)
+	response = make_response(template)
+	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
+	return response, 200
+
 
 @accountant.route('/show_all_debtors')
 @login_required
@@ -468,6 +489,47 @@ def student_classes(current_user):
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
 	return response
+
+@accountant.route('/update_student_data', methods = ['POST'])
+@login_required
+def update_student_data(current_user):
+	if request.method == 'POST':
+		json_data = request.get_json()
+		firstname = json_data.get('firstname')
+		lastname = json_data.get('lastname')
+		dob = json_data.get('dob')
+		othername = json_data.get('othername')
+		parent_phone = json_data.get('parent_phone')
+		form = json_data.get('class')
+		phone = json_data.get('phone')
+		idx = generate_student_id(parent_phone, firstname)
+		id1 = json_data.get('id')
+		data = {
+				'firstname': firstname,
+				'lastname': lastname,
+				'othername': othername,
+				'form': form,
+				'parent_phone': parent_phone,
+				'phone': phone,
+				'dob': dob,
+				'student_id': idx,
+				'class': form[0],
+				}
+		try:
+			update_student(data, id1)
+			return jsonify({'message': 'success'}), 200
+		except:
+			return jsonify({'message': 'failed'}), 500
+
+
+@accountant.route('/delete_student', methods = ['POST', 'GET'])
+@login_required
+def delete_student(current_user):
+	if request.method == 'POST':
+		json_data = request.get_json()
+		idx = json_data.get('id')
+		delete_one_student(idx)
+		return jsonify({'message': 'success'})
 
 @accountant.route('/delete_student_class', methods = ['POST'])
 @login_required

@@ -5,6 +5,7 @@ from functools import wraps
 from flask_bcrypt import Bcrypt
 from app.models import get_user
 from datetime import timedelta
+from app.helpers import get_date_back
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -35,6 +36,15 @@ def login_required(f):
 			return jsonify({'message': 'InvalidUser'}), 401
 		return f(current_user, *args, **kwags)
 	return decorated
+
+
+@app.template_filter()
+def date_format(value):
+	if type(value) != float:
+		return value
+	else:
+		value2 = get_date_back(value)
+		return value2
 
 
 @app.route('/')

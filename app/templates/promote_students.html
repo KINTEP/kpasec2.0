@@ -771,7 +771,7 @@ function promoteStudents() {
 					}).then((isOkay) => {
 						if (isOkay){
 											
-									fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/promote_students", {
+									fetch("/accountant/promote_students", {
 										  method: 'POST', // or 'PUT'
 										  headers: {
 										    'Content-Type': 'application/json',
@@ -822,7 +822,7 @@ function promoteStudents() {
 					}).then((isOkay) => {
 						if (isOkay){
 											
-									fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/archive_student", {
+									fetch("/accountant/archive_student", {
 										  method: 'POST', // or 'PUT'
 										  headers: {
 										    'Content-Type': 'application/json',

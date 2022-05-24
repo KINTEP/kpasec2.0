@@ -21,12 +21,13 @@ def test_template(current_user):
 	return response
 
 @clerk.route('/register_student', methods = ['POST'])
-@login_required
-def register_student(current_user):
+#@login_required
+def register_student():
 	if request.method == 'POST':
 		json_data = request.get_json()
 		firstname = json_data.get('firstname')
 		lastname = json_data.get('lastname')
+		dob = json_data.get('dob')
 		othername = json_data.get('othername')
 		parent_phone = json_data.get('parent_phone')
 		form = json_data.get('class')
@@ -37,7 +38,7 @@ def register_student(current_user):
 		cha = [{'date': get_date3(datetime.utcnow()), 'etl':0, 'pta':0}]
 		date_completed = "2022-1-2"
 		try:
-			add_student(firstname, lastname, othername, date_completed, form, parent_phone, phone, idx, g.user.get("fullname"), etl, pta, cha, status=1)
+			add_student(firstname, lastname, othername, date_completed, form, parent_phone, phone, idx, "Kumi Isaac Newton", etl, pta, cha, dob)
 			return jsonify({'message':'success'}), 200
 		except:
 			return jsonify({'message': 'error'}), 500
@@ -176,7 +177,6 @@ def dashboard_stats(current_user):
 @clerk.route('/pay_search_result', methods = ['POST', 'GET'])
 @login_required
 def pay_search_result(current_user):
-	print(g.user)
 	idx = session.get('pay_id')
 	student = get_student_by_doc(idx)
 	stud = {

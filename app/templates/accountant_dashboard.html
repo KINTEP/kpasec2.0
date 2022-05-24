@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	<title>Dashboard</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -978,7 +978,7 @@ span a{
 		 <div class="row ro2">
 		 	 <div class="col waa " >
 		 	 <a href="{{url_for('accountant.daily_reports')}}"><div class=" btn btn-success btn4" id="btn4">Daily<br>Report</div></a>
-		 	 <a href="{{url_for('accountant.search_ledger')}}"><div class=" btn btn-success btn5" id="btn5">Generate<br>Student Ledger</div></a>
+		 	 <a href="#"><div class=" btn btn-success btn5" id="btn5">Generate<br>Student Ledger</div></a>
 
 		 	 <a href=""><div class=" btn btn-success btn6" id="btn6">Expenses<br><p> GHC 891</p></div></a>
 		 	
@@ -1089,7 +1089,7 @@ span a{
 <script type="text/javascript">
 function obtainClasses() {
 	
-				fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/get_student_classes")
+				fetch("/accountant/get_student_classes")
 						.then(response => response.json())
 						.then(data => {
 						  all_data = data['data'];
@@ -1127,7 +1127,7 @@ function sendReportData () {
 
 			  }
 
-			  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/reports", {
+			  fetch("/accountant/reports", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',
@@ -1195,7 +1195,7 @@ function sendOtherIncomeData () {
 
 			  }
 
-			  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/other_business", {
+			  fetch("/accountant/other_business", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',
@@ -1241,7 +1241,7 @@ function sendClassData () {
 function getStatsData () {
   // (A) GET FORM DATA
 
-		  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/dashboard_stats")
+		  fetch("/accountant/dashboard_stats")
 				.then(response => response.json())
 				.then(data => {
 				  all_data = data['data']

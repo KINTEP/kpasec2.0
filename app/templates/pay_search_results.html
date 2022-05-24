@@ -646,7 +646,7 @@ function submitETLForm(form) {
 	}).then((isOkay) => {
 		if (isOkay){
 							
-				fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/etl_income", {
+				fetch("/clerk/etl_income", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',
@@ -712,7 +712,7 @@ function submitPTAForm(form) {
 	}).then((isOkay) => {
 		if (isOkay){
 							
-				fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/clerk/pta_income", {
+				fetch("/clerk/pta_income", {
 					  method: 'POST', // or 'PUT'
 					  headers: {
 					    'Content-Type': 'application/json',

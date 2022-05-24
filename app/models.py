@@ -7,7 +7,7 @@ from .helpers import *
 
 
 
-cred = credentials.Certificate(r"app/trial1.json")
+cred = credentials.Certificate(r"app/API.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -30,7 +30,7 @@ def add_staff(fullname, email, password, role):
 def add_student_archives(stud):
 	db.collection("main").document("student_archives").collection('STD').document().set(stud)
 
-def add_student(firstname, lastname, othername, date_completed, form, parent_phone, phone, idx, clerk, etl, pta, cha, status=1):
+def add_student(firstname, lastname, othername, date_completed, form, parent_phone, phone, idx, clerk, etl, pta, cha, dob, status=1):
 	today = datetime.utcnow()
 	stud = {
 	'date': today,
@@ -41,6 +41,7 @@ def add_student(firstname, lastname, othername, date_completed, form, parent_pho
 	'form': form,
 	'parent_phone': parent_phone,
 	'phone': phone,
+	'dob': dob,
 	'student_id': idx,
 	'class': form[0],
 	'status': status,
@@ -51,6 +52,7 @@ def add_student(firstname, lastname, othername, date_completed, form, parent_pho
 	'clerk': clerk
 		}
 	db.collection("main").document("students").collection('STD').document().set(stud)
+
 
 
 def add_pta_income(clerk, amount, tx_id, sem, mode, cat, payer, name, form):
@@ -207,9 +209,9 @@ def get_student_by_doc(idx):
 
 
 def get_all_classes():
-	result = db.collection("main").document("student_classes").collection('CLS').order_by("date", direction=firestore.Query.DESCENDING).get()
+	result = db.collection("main").document("student_classes").collection('CLS').order_by("class", direction=firestore.Query.DESCENDING).get()
 	data = [add_ids(res.to_dict(), res.id) for res in result]
-	return data
+	return data[::-1]
 
 def get_all_categories():
 	results = db.collection("main").document("expense_category").collection('CAT').get()
@@ -234,9 +236,9 @@ def get_one_student(idx):
 	return False
 
 def student_ledger(idx):
-	stud = get_one_student(idx)
+	stud = get_student_by_doc(idx)
 	if stud:
-		stud = stud.to_dict()
+		stud = stud
 		etl_pmt = stud['etl_payment']
 		pta_pmt = stud['pta_payment']
 		if type(etl_pmt) == list:
@@ -350,10 +352,21 @@ def get_etl_cash_payment_bal(start):
 	return res2
 
 def get_debtors_list(form):
-	res = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
-	obj = [i.to_dict() for i in res]
+	results = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
+	obj = [add_ids(res.to_dict(), res.id) for res in results]
 	all_list = [get_balance(obj=i) for i in obj]
 	return all_list
+
+def get_all_student_list(form):
+	result = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
+	data = [add_ids(res.to_dict(), res.id) for res in result]
+	#obj = [i.to_dict() for i in res]
+	return data
+
+#P1 = get_all_student_list(form='3G3')
+#print(P1[0])
+
+
 
 def student_list(form):
 	result = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
@@ -363,6 +376,7 @@ def student_list(form):
 
 def get_balance(obj):
 	idx = obj.get('student_id')
+	idx1 = obj.get('id')
 	stud = get_one_student(idx)
 	if stud:
 		stud = stud.to_dict()
@@ -379,7 +393,8 @@ def get_balance(obj):
 			'form': stud['form'],
 			'name': stud['firstname'] + " " + stud['lastname'],
 			'pta': pta_bal,
-			'etl': etl_bal
+			'etl': etl_bal,
+			'id': idx1
 		}
 		return data
 	return False
@@ -415,21 +430,19 @@ def get_user(user_id):
 
 
 
-res = get_etl_cash_payment(1651363200.0, 1652918400.0)
-cats = list(set([i['category'] for i in res]))
-list1 = []
-for val in cats:
-	d = {val: [i for i in res if i['category'] == val]}
-	list1.append(d)
 
-d1 = {val1: [i for i in res if i['category'] == val1] for val1 in cats}
-print(d1)
-print(len(d1))
 
 
 
 
 ####
+def update_student(data, idx):
+	db.collection("main").document("students").collection('STD').document(idx).update(data)
+
+def delete_one_student(idx):
+	db.collection("main").document("students").collection('STD').document(idx).delete()
+
+
 def delete_class(cls_id):
 	db.collection("main").document("student_classes").collection('CLS').document(cls_id).delete()
 

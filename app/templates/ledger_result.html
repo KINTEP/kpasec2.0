@@ -496,7 +496,7 @@ function renderETLData() {
 	function getClassData () {
 			  // (A) GET FORM DATA
 
-			  fetch("https://newkpasec-uhbbwcufmq-rj.a.run.app/accountant/get_student_classes")
+			  fetch("/accountant/get_student_classes")
 					.then(response => response.json())
 					.then(data => {
 					  all_data = data['data'];
