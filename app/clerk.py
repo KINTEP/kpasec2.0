@@ -21,8 +21,8 @@ def test_template(current_user):
 	return response
 
 @clerk.route('/register_student', methods = ['POST'])
-#@login_required
-def register_student():
+@login_required
+def register_student(current_user):
 	if request.method == 'POST':
 		json_data = request.get_json()
 		firstname = json_data.get('firstname')
@@ -32,13 +32,19 @@ def register_student():
 		parent_phone = json_data.get('parent_phone')
 		form = json_data.get('class')
 		phone = json_data.get('phone')
+		input_date = "2023-01-10"
 		idx = generate_student_id(parent_phone, firstname)
-		etl = [{'date': get_date3(datetime.utcnow()), 'amount':0}]
-		pta = [{'date': get_date3(datetime.utcnow()), 'amount':0}]
-		cha = [{'date': get_date3(datetime.utcnow()), 'etl':0, 'pta':0}]
-		date_completed = "2022-1-2"
+		etl = [{'date': get_date22(input_date), 'amount':0, 'details': 'Init'}]
+		pta = [{'date': get_date22(input_date), 'amount':0, 'details': 'Init'}]
+		date_completed = ""
+		pta_balance = 0
+		etl_balance = 0
+		tx_id = generate_receipt_no()
+		name = lastname + " " + firstname
+		clerk = "Kumi Isaac Newton"
 		try:
-			add_student(firstname, lastname, othername, date_completed, form, parent_phone, phone, idx, "Kumi Isaac Newton", etl, pta, cha, dob)
+			add_student22(firstname.upper(), lastname.upper(), othername.upper(), date_completed, form, parent_phone, phone, idx, clerk, etl, pta, dob, pta_balance, etl_balance, status=1)
+			#add_student22(firstname, lastname, othername, date_completed, form, parent_phone, phone, idx,clerk, etl, pta, cha, dob, etl_balance, pta_balance)
 			return jsonify({'message':'success'}), 200
 		except:
 			return jsonify({'message': 'error'}), 500
@@ -54,22 +60,41 @@ def pta_income(current_user):
 		semester = json_data.get('semester')
 		amount = json_data.get('amount')
 		student_id = json_data.get('student_id')
+		details = json_data.get('details')
 		name = json_data.get('name')
 		form = json_data.get('form')
+		date = json_data.get('date')
+
+		#print(json_data)
+		idx = session.get('pay_id')
+		print(idx)
+		if not details:
+			details = 'PTA'
 		if number:
 			tx_id = number
 		else:
 			tx_id = generate_receipt_no()
-		try:
-			add_pta_income(clerk=g.user.get("fullname"), amount=amount, tx_id=tx_id, sem=semester, mode=mode, 
-				cat='PTA', payer=student_id, name=name, form=form)
-			student = get_one_student(student_id)
-			idx = session.get('pay_id')
-			new_data = {'date': get_date3(datetime.utcnow()), 'amount': amount}
-			res = db.collection("main").document("students").collection('STD').document(idx).update({"pta_payment": firestore.ArrayUnion([new_data])})
-			return jsonify({'message':'success', 'data': tx_id}), 200
-		except:
-			return jsonify({'message':'error'}), 500
+		if float(amount) > 0:
+			try:
+				add_pta_income(clerk=g.user.get("fullname"), amount=amount, tx_id=tx_id, sem=semester, mode=mode, 
+						cat='PTA', payer=student_id, name=name, form=form, details=details, date=date)
+				idx = session.get('pay_id')
+				pt_data = {'date':get_date22(date), 'amount':float(amount), 'details':details}
+				doc_ref = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx)
+				doc_ref.update({"pta_account": firestore.ArrayUnion([pt_data])})
+				update_student_balance(form, idx, 'pta_account')
+				return jsonify({'message':'success', 'data': tx_id}), 200
+			except:
+				return jsonify({'message':'error'}), 500
+		else:
+			try:
+				pt_data = {'date':get_date22(date), 'amount':float(amount), 'details':details}
+				doc_ref = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx)
+				doc_ref.update({"pta_account": firestore.ArrayUnion([pt_data])})
+				update_student_balance(form, idx, 'pta_account')
+				return jsonify({'message':'success', 'data': tx_id}), 200
+			except:
+				return jsonify({'message':'error'}), 500
 
 
 @clerk.route('/etl_income', methods = ['POST'])
@@ -82,22 +107,39 @@ def etl_income(current_user):
 		semester = json_data.get('semester')
 		amount = json_data.get('amount')
 		student_id = json_data.get('student_id')
+		details = json_data.get('details')
 		name = json_data.get('name')
 		form = json_data.get('form')
+		date = json_data.get('date')
+		idx = session.get('pay_id')
+		print(idx)
+		if not details:
+			details = 'ETL'
 		if number:
 			tx_id = number
 		else:
 			tx_id = generate_receipt_no()
-		try:
-			add_etl_income(clerk=g.user.get("fullname"), amount=amount, tx_id=tx_id, sem=semester, mode=mode, 
-				cat='ETL', payer=student_id, name=name, form=form)
-			student = get_one_student(student_id)
-			idx = session.get('pay_id')
-			new_data = {'date':get_date3(datetime.utcnow()), 'amount':amount}
-			res = db.collection("main").document("students").collection('STD').document(idx).update({"etl_payment": firestore.ArrayUnion([new_data])})
-			return jsonify({'message':'success', 'data': tx_id}), 200
-		except:
-			return jsonify({'message':'error'}), 500
+		if float(amount) > 0:
+			try:
+				add_etl_income(clerk=g.user.get("fullname"), amount=amount, tx_id=tx_id, sem=semester, mode=mode, 
+						cat='ETL', payer=student_id, name=name, form=form, details=details, date=date)
+				idx = session.get('pay_id')
+				et_data = {'date':get_date22(date), 'amount':float(amount), 'details':details}
+				doc_ref = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx)
+				doc_ref.update({"etl_account": firestore.ArrayUnion([et_data])})
+				update_student_balance(form, idx, 'etl_account')
+				return jsonify({'message':'success', 'data': tx_id}), 200
+			except:
+				return jsonify({'message':'error'}), 500
+		else:
+			try:
+				et_data = {'date':get_date22(date), 'amount':float(amount), 'details':details}
+				doc_ref = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx)
+				doc_ref.update({"etl_account": firestore.ArrayUnion([et_data])})
+				update_student_balance(form, idx, 'etl_account')
+				return jsonify({'message':'success', 'data': tx_id}), 200
+			except:
+				return jsonify({'message':'error'}), 500
 
 
 
@@ -149,7 +191,7 @@ def search_student(current_user):
 def test(current_user):
 	if request.method == 'POST':
 		json_data = request.get_json()
-		print(json_data)
+		#print(json_data)
 		return jsonify({'message': 'success'})
 	return jsonify({'message': 'Get Data'})
 
@@ -178,7 +220,8 @@ def dashboard_stats(current_user):
 @login_required
 def pay_search_result(current_user):
 	idx = session.get('pay_id')
-	student = get_student_by_doc(idx)
+	form = session.get('form')
+	student = get_student_by_doc(idx, form)
 	stud = {
 		'firstname': student['firstname'],
 		'lastname': student['lastname'],
@@ -197,6 +240,7 @@ def get_pay_data(current_user):
 	if request.method == 'POST':
 		data = request.get_json()
 		session['pay_id'] = data['pay_id']
+		session['form'] = data['form']
 		return jsonify({'message': 'success'}), 200
 
 
@@ -205,6 +249,7 @@ def get_pay_data(current_user):
 def student_pay(current_user):		
 	form = request.args.get('form')
 	list1 = student_list(form=form)
+	#print(list1)
 	template = render_template('student_pay.html', list1=list1, form=form)
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'

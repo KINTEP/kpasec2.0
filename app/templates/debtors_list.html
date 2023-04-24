@@ -204,7 +204,7 @@ span a{
 			    <div class="collapse navbar-collapse" id="navbarText">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active " aria-current="page" href="accountant_dashboard.html"id="nav1" style="color:black;">Home</a>
+			          <a class="nav-link active " aria-current="page" href="{{url_for('accountant.dashboard_stats')}}"id="nav1" style="color:black;">Home</a>
 			        </li>		        
 			      </ul>
 
@@ -221,7 +221,7 @@ span a{
 	 <div class="narv">
 
 		<div class="income">
-		<h3 style="text-align: center;padding-top: 5vh;padding-bottom: 2vh;">All Debtors for <br> <abbr style="font-family: cursive; color: red;font-size:18px"><span class="fw-bold text-lg" id="">{{form}}</span></abbr><abbr style="font-family: cursive; color: red;font-size:18px"></abbr> </h3>
+		<h3 style="text-align: center;padding-top: 5vh;padding-bottom: 2vh;">All Debtors for <br> <abbr style="font-family: cursive; color: red;font-size:18px"><span class="fw-bold text-lg" id="form_id">{{form}}</span></abbr><abbr style="font-family: cursive; color: red;font-size:18px"></abbr> </h3>
 		
 	    </div>
 		<ul>
@@ -238,20 +238,28 @@ span a{
    				<th class="fomm">ETL Bal</th>
    				<th class="fomm">View</th>
    			</tr>
+   			<tr>
+   				<th class="non"></th>
+   				<th class="foom"></th>
+   				<th class="fom">Totals</th>
+   				<th class="fomm">{{pta_total | currency_format}}</th>
+   				<th class="fomm">{{etl_total | currency_format}}</th>
+   				<th class="fomm"></th>
+   			</tr>
 				{% for debt in list1 %}
    			<tr>
 					  <td>{{loop.index}}</td>
 					  <td class="fom">{{debt['form']}}</td>
-					  <td>{{debt['name']}}</td>
-					  <td>{{debt['pta']}}</td>
-					  <td>{{debt['etl']}}</td>
+					  <td>{{debt['lastname']}} {{debt['firstname']}}</td>
+					  <td>{{debt.get('pta_account_bal', 0) | currency_format}}</td>
+					  <td>{{debt.get('etl_account_bal', 0) | currency_format}}</td>
 					  <td><button class='btn-sm btn-danger' id="{{debt['id']}}" onclick="getLedger(this)">Ledger</button></td>
 				</tr>
    			{% endfor %}
 			</table><br><br>
 		</div><br><br>
 		
-
+			
 
 </body>
 
@@ -259,9 +267,11 @@ span a{
 	function getLedger(element) {
 		
 		  idx = element.id
-		$.get( `/accountant/ledger_results?idx=${idx}`, function( data, status ) {
+		  form = document.getElementById("form_id").innerHTML
+		  console.log(form)
+		$.get( `/accountant/ledger_results?idx=${idx}&form=${form}`, function( data, status ) {
 		  if (status === 'success') {
-		  	window.location.href = `/accountant/ledger_results?idx=${idx}`
+		  	window.location.href = `/accountant/ledger_results?idx=${idx}&form=${form}`
 		  }
 		  
 		});

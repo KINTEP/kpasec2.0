@@ -3,12 +3,15 @@ from .helpers import *
 from .models import *
 import datetime as dt
 from itertools import accumulate
-from app import login_required, date_format
+from app import login_required, date_formats, currency_format
+import math as np
 
 accountant = Blueprint('accountant', __name__, url_prefix = '/accountant')
 
 report_data = {}
 all_debtors = {}
+
+
 
 @accountant.route('/reports', methods = ['POST'])
 @login_required
@@ -61,18 +64,21 @@ def search_ledger(current_user):
 @login_required
 def ledger_results(current_user):
 	doc_id = request.args.get('idx')
-	#stud_id = session.get('ledger_id')
-	check = get_student_by_doc(doc_id)
-	etl, pta = student_ledger(doc_id)
-	etll = [float(res['amount']) if res['cat'] == 'etl' else -float(res['amount']) for res in etl]
-	ptaa = [float(res['amount']) if res['cat'] == 'pta' else -float(res['amount']) for res in pta]
-	check1 = check
+	form = request.args.get('form')
+	student = student_ledger(doc_id, form)
+	pta = student['pta_account']
+	etl = student['etl_account']
+	ptaa = [i['amount'] for i in pta]
+	etll  = [i['amount'] for i in etl]
+
+	print(etl)
+	
 	data = {
 				'pta': pta,
 				'etl': etl,
-				'fullname': check1.get('lastname') + " " + check1.get('firstname'),
-				'form': check1.get('form'),
-				'phone': check1.get('parent_phone'),
+				'fullname': student.get('lastname') + " " + student.get('firstname'),
+				'form': student.get('form'),
+				'phone': student.get('parent_phone'),
 				'pta_cum': list(accumulate(ptaa)),
 				'etl_cum': list(accumulate(etll)),
 				'etl_tot': sum([float(i['amount']) for i in etl]),
@@ -87,7 +93,8 @@ def ledger_results(current_user):
 @login_required
 def student_by_doc(current_user):		
 	idx = request.args.get('idx')
-	students = get_student_by_doc(idx)
+	form = request.args.get('form')
+	students = get_student_by_doc(idx, form)
 	if type(students['dob']) == float:
 		students['dob'] = get_date_back(students['dob'])
 	return jsonify({'message': 'success', 'data': students})
@@ -97,8 +104,15 @@ def student_by_doc(current_user):
 @login_required
 def debtors_list(current_user):		
 	form = request.args.get('form')
-	list1 = get_debtors_list(form=form)
-	template = render_template('debtors_list.html', list1=list1, form=form)
+	#list1 = get_debtors_list(form=form)
+	list1 = get_all_student_list(form=form)
+	print(list1[0])
+	
+	pta_total = sum([i.get('pta_account_bal', 0) for i in list1 if not np.isnan(i.get('pta_account_bal', 0))])
+	etl_total = sum([i.get('etl_account_bal', 0) for i in list1 if not np.isnan(i.get('etl_account_bal', 0))])
+	list1 = sorted(list1, key=lambda x: x['lastname'])
+	print(etl_total)
+	template = render_template('debtors_list.html', list1=list1, form=form, pta_total=pta_total, etl_total=etl_total)
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
 	return response, 200
@@ -516,7 +530,7 @@ def update_student_data(current_user):
 				'class': form[0],
 				}
 		try:
-			update_student(data, id1)
+			update_student(data, id1, form)
 			return jsonify({'message': 'success'}), 200
 		except:
 			return jsonify({'message': 'failed'}), 500
@@ -528,8 +542,9 @@ def delete_student(current_user):
 	if request.method == 'POST':
 		json_data = request.get_json()
 		idx = json_data.get('id')
-		delete_one_student(idx)
-		return jsonify({'message': 'success'})
+		form = json_data.get('form')
+		delete_one_student(idx, form)
+		return jsonify({'message': 'success'}), 200
 
 @accountant.route('/delete_student_class', methods = ['POST'])
 @login_required
@@ -550,4 +565,24 @@ def get_student_classes(current_user):
 	
 	send = {'data': data}
 	return jsonify(send), 200
+
+
+@accountant.route('/update_student_payment', methods = ['POST'])
+@login_required
+def update_student_payment(current_user):
+	if request.method == 'POST':
+		data = request.get_json()
+		amt = float(data.get('amt'))
+		form = data.get('form')
+		loop = int(data.get('loop'))
+		account = data.get('account')
+		idx = data.get('idx')
+		print(data)
+		try:
+			update_payment(amt, form, idx, loop, account)
+			update_student_balance(form, idx, account)
+
+			return jsonify({'message': 'success'}), 200
+		except:
+			return jsonify({'message': 'failed'}), 500
 

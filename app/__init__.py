@@ -6,10 +6,12 @@ from flask_bcrypt import Bcrypt
 from app.models import get_user
 from datetime import timedelta
 from app.helpers import get_date_back
+import locale
+
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = 'ehhagfaFH#'#os.environ.get('SECRET_KEY')
 CORS(app)
 
 
@@ -21,6 +23,7 @@ def before_request():
     	user_id = session.get('user_id')
     	user = get_user(user_id)
     	g.user = user.to_dict()
+
 
 def login_required(f):
 	@wraps(f)
@@ -39,7 +42,16 @@ def login_required(f):
 
 
 @app.template_filter()
-def date_format(value):
+def currency_format(value):
+    locale.setlocale(locale.LC_ALL, '')
+    formatted_value = locale.format_string('%.2f', abs(value), grouping=True)
+    if value < 0:
+        formatted_value = '(' + formatted_value + ')'
+    return formatted_value
+
+
+@app.template_filter()
+def date_formats(value):
 	if type(value) != float:
 		return value
 	else:

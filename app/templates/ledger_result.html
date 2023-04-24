@@ -260,7 +260,7 @@ table{
 			    <div class="collapse navbar-collapse" id="navbarText">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active " aria-current="page" href="accountant_dashboard.html"id="nav1" style="color:black;">Home</a>
+			          <a class="nav-link active " aria-current="page" href="{{url_for('accountant.dashboard_stats')}}"id="nav1" style="color:black;">Home</a>
 			        </li>		        
 			      </ul>
 
@@ -295,15 +295,15 @@ table{
    			</tr>
    			<tr>
    			   <th>P.T.A Balance</th>
-   			   <td id="">{{data['pta_cum'][-1]}}</td>
+   			   <td id="">{{data['pta_cum'][-1] | currency_format}}</td>
    			</tr>
    			<tr>
    			   <th>E.T.L Balance</th>
-   			   <td id="">{{data['etl_cum'][-1]}}</td>
+   			   <td id="">{{data['etl_cum'][-1] | currency_format}}</td>
    			</tr>
    		</table>
    		</div><br>
-   		<h3 style="text-align:center">Student ETL Ledger</h3>
+   		<h3 style="text-align:center" id="etl_account">Student ETL Ledger</h3>
              
    		<div class="tablee2">
    			<table id="etl_table">
@@ -313,23 +313,27 @@ table{
    					<th  class="dat3">Debit</th>
    					<th  class="dat4">Credit</th>
    					<th  class="dat5">Balance</th>
+   					<th  class="dat5">Edit</th>
    				</tr>
    				{% for etl in data['etl'] %}
-   				{% if etl['amount'] != 0 %}
-   				<tr>
-							<td class="dat1">{{etl['date']}}</td>
-							{% if etl['cat'] == 'etl'%}
-							<td  class="dat2">ETL</td>
+   				
+   					<tr>
+							<td class="dat1">{{etl['date'] | date_formats}}</td>
+							{% if etl['amount'] > 0%}
+							<td  class="dat2">{{etl['details']}}</td>
 							<td  class="dat3 bg-danger co"></td>
-							<td class="dat4 bg-success ">{{etl['amount']}}</td>
+							<td class="dat4 bg-success ">{{etl['amount'] | currency_format}}</td>
 							{% else %}
-							<td  class="dat2">CHARGE</td>
-							<td  class="dat3 bg-danger co">{{etl['amount']}}</td>
+							<td  class="dat2">{{etl['details']}}</td>
+							<td  class="dat3 bg-danger co">{{etl['amount'] | currency_format}}</td>
 							<td class="dat4 bg-success "></td>
 							{% endif %}
-							<td class="dat5 bg-danger co">{{data['etl_cum'][loop.index - 1]}}</td>
+							<td class="dat5 bg-danger co">{{data['etl_cum'][loop.index-1]| currency_format}}</td>
+							<td class="dat5  ">
+								<button class="btn-sm bg-primary" id="{{loop.index-1}}" onclick="logID(this)">edit</button>
+							</td>
 					</tr>
-					{% endif %}
+					
 					{% endfor %}	
    			</table><br>
 
@@ -340,7 +344,7 @@ table{
 
 
 
-   		<h3 style="text-align:center">Student PTA Ledger</h3>
+   		<h3 style="text-align:center" id="pta_account">Student PTA Ledger</h3>
              
    		<div class="tablee2" >
    			<table id="pta_table">
@@ -350,38 +354,133 @@ table{
    					<th  class="dat3">Debit</th>
    					<th  class="dat4">Credit</th>
    					<th  class="dat5">Balance</th>
+   					<th  class="dat5">Edit</th>
    				</tr>
    
    			{% for pta in data['pta'] %}
-   			{% if pta['amount'] != 0 %}
-   				<tr>
-							<td class="dat1">{{pta['date']}}</td>
-							{% if pta['cat'] == 'pta'%}
-							<td  class="dat2">ETL</td>
+   			
+   					<tr>
+							<td class="dat1">{{pta['date'] | date_formats}}</td>
+							{% if pta['amount'] > 0%}
+							<td  class="dat2">{{pta['details']}}</td>
 							<td  class="dat3 bg-danger co"></td>
-							<td class="dat4 bg-success ">{{pta['amount']}}</td>
+							<td class="dat4 bg-success">{{pta['amount'] | currency_format}}</td>
 							{% else %}
-							<td  class="dat2">CHARGE</td>
-							<td  class="dat3 bg-danger co">{{pta['amount']}}</td>
+							<td  class="dat2">{{pta['details']}}</td>
+							<td  class="dat3 bg-danger co">{{pta['amount'] | currency_format}}</td>
 							<td class="dat4 bg-success "></td>
 							{% endif %}
-							<td class="dat5 bg-danger co">{{data['pta_cum'][loop.index - 1]}}</td>
+							<td class="dat5 bg-danger co">{{data['pta_cum'][loop.index-1] | currency_format}}</td>
+							<td class="dat5  ">
+								<button id="{{loop.index - 1}}" class="btn-sm bg-primary" onclick="logID(this)">
+									edit
+								</button>
+							</td>
 					</tr>
-					{% endif %}
+					
 					{% endfor %}	
    				
    		</table>
    		<br>
 
    		</div>
-
+   		<input type="" name="" style="width: 20%">
 
    	</div>
 
+   	
+
 </div><br> 
 
+
+	
+
+
 <script type="text/javascript">
+	function logID(element) {
+		if (element.parentElement.parentElement.childNodes[5].innerText) {
+			item = element.parentElement.parentElement.childNodes[5]
+		}else{
+			item = element.parentElement.parentElement.childNodes[7]
+		}
+		
+		val = item.innerText
+		
+			if (val.charAt(0) === '(' && val.charAt(val.length - 1) === ')') {
+			  result = val.substring(1, val.length - 1);
+			  result = -parseFloat(result.replaceAll(",",""))
+			} else {
+			  result = val.replaceAll(",","")
+			  result = parseFloat(result);
+			}
+		
+		item.innerHTML = `
+		<form id="my-form">
+			<input type="number" step="0.01" id="float-input" name="float-input" value = "${result}" style="width: 90%" id = "my-input">
+		</form>
+			`
+
+		let account = element.parentElement.parentElement.parentElement.parentElement.parentElement.previousElementSibling.id
+		console.log(account)
+
+		let input = document.getElementById('float-input');
+  		input.addEventListener('keypress', function(event) {
+		    if (event.key === 'Enter') {
+		      event.preventDefault(); // prevent default Enter key behavior (e.g. adding a new line)
+		      console.log(input.value)
+
+
+		      	const url = 'http://127.0.0.1:9000/accountant/update_student_payment';
+		      	const url2 = new URL(window.location.href);
+				const searchParams = new URLSearchParams(url2.search);
+
+				const idx = searchParams.get('idx');
+				const form = searchParams.get('form');
+
+				const data = {
+				  amt: input.value,
+				  form: form,
+				  idx: idx,
+				  loop: element.id,
+				  account: account
+				};
+
+				const options = {
+				  method: 'POST',
+				  headers: {
+				    'Content-Type': 'application/json'
+				  },
+				  body: JSON.stringify(data)
+				};
+
+				fetch(url, options)
+				  .then(response => {
+				    if (response.ok) {
+				      return response.json();
+				    }
+				    alert("Network response was not ok")
+				    throw new Error('Network response was not ok.');
+				  })
+				  .then(data => {
+				    console.log(data);
+				    if (data['message'] === 'success'){
+				    	alert("Update successful")
+				    	window.location.reload();
+				    }
+				  })
+				  .catch(error => {
+				    console.error('There was a problem with the fetch operation:', error);
+				  });
+
+		    }
+ 		 })
+	}
 </script> 
+
+
+<script>
+  
+</script>
 
 <script type="text/javascript">
 

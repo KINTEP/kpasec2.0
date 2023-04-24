@@ -53,13 +53,24 @@ def add_student(firstname, lastname, othername, date_completed, form, parent_pho
 		}
 	db.collection("main").document("students").collection('STD').document().set(stud)
 
+def add_student22(fname, lname, oname, date11, form, pphone, phone, idx, clerk, etl, pta, dob, pta_bal, etl_bal, status=1):
+    today = datetime.utcnow()
+    stud = {
+            'date': today, 'date2': get_date2(today), 'firstname': fname, 'lastname': lname,
+            'othername': oname, 'form': form, 'parent_phone': pphone, 'phone': phone, 'dob': dob,
+            'student_id': idx, 'class': form[0], 'status': status, 'date_completed': date11, 'etl_account': etl,
+            'pta_account': pta, 'clerk': clerk,
+            'pta_account_bal':pta_bal,
+            'etl_account_bal':etl_bal,
+            }
+    
+    db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document().set(stud)
 
-
-def add_pta_income(clerk, amount, tx_id, sem, mode, cat, payer, name, form):
+def add_pta_income(clerk, amount, tx_id, sem, mode, cat, payer, name, form, details, date):
 	today = datetime.utcnow()
 	pta = {
 	'date': today,
-	'date2': get_date2(today),
+	'date2': get_date22(date),
 	'clerk': clerk,
 	'amount': amount,
 	'tx_id': tx_id,
@@ -68,16 +79,17 @@ def add_pta_income(clerk, amount, tx_id, sem, mode, cat, payer, name, form):
 	'category': cat,
 	'payer': payer,
 	'name': name,
-	'class': form
+	'class': form,
+	'details': details
 		}
 	db.collection("main").document("pta_income").collection('PTA').document().set(pta)
 
 
-def add_etl_income(clerk, amount, tx_id, sem, mode, cat, payer, name, form):
+def add_etl_income(clerk, amount, tx_id, sem, mode, cat, payer, name, form, details, date):
 	today = datetime.utcnow()
 	etl = {
 	'date': today,
-	'date2': get_date2(today),
+	'date2': get_date22(date),
 	'clerk': clerk,
 	'amount': amount,
 	'tx_id': tx_id,
@@ -86,7 +98,8 @@ def add_etl_income(clerk, amount, tx_id, sem, mode, cat, payer, name, form):
 	'category': cat,
 	'payer': payer,
 	'name': name,
-	'class': form
+	'class': form,
+	'details':details
 		}
 	db.collection("main").document("etl_income").collection('ETL').document().set(etl)
 
@@ -111,7 +124,7 @@ def add_pta_expense(clerk, total, detail, sem, mode, quantity, cat):
 	today = datetime.utcnow()
 	pta = {
 	'date': today,
-	'date2': get_date2(today),
+	'date2': get_date22(today),
 	'clerk': clerk,
 	'detail': detail,
 	'semester': sem,
@@ -203,8 +216,9 @@ def add_donation(clerk, amount, tx_id, sem, mode, cat, phone, name):
 
 ####
 
-def get_student_by_doc(idx):
-	results = db.collection("main").document("students").collection('STD').document(idx).get()
+def get_student_by_doc(idx, form):
+	#results = db.collection("main").document("students").collection('STD').document(idx).get()
+	results = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx).get()
 	return results.to_dict()
 
 
@@ -229,38 +243,20 @@ def get_pta_expenses():
 	data = [res.to_dict() for res in results]
 	return data
 
-def get_one_student(idx):
-	stud = db.collection("main").document("students").collection('STD').where("student_id", "==", idx).get()
+def get_one_student(idx, form):
+	#stud = db.collection("main").document("students").collection('STD').where("student_id", "==", idx).get()
+	stud = db.collection("main").document("students").collection('STD').document(f"{form}").collection('STD').where("student_id", "==", idx).get()
 	if stud:
-			return stud[0]
+		return stud[0]
 	return False
 
-def student_ledger(idx):
-	stud = get_student_by_doc(idx)
+def student_ledger(idx, form):
+	stud = get_student_by_doc(idx, form)
 	if stud:
 		stud = stud
-		etl_pmt = stud['etl_payment']
-		pta_pmt = stud['pta_payment']
-		if type(etl_pmt) == list:
-			etl_pmt = [change_category(dict1=d1, kind='etl') for d1 in etl_pmt]
-		else:
-			etl_pmt = [change_category(dict1=etl_pmt, kind='etl')]
-		
-		if type(pta_pmt) != list:
-			pta_pmt = [change_category(stud['pta_payment'], kind='pta')]
-		else:
-			pta_pmt = [change_category(dict1=d1, kind='pta') for d1 in pta_pmt]
-		charge = stud['charge']
-		etll = [get_right_data(dict1=d1, kind='etl') for d1 in charge]
-		ptaa = [get_right_data(dict1=d1, kind='pta') for d1 in charge]
-		etll += etl_pmt[:]
-		ptaa += pta_pmt[:]
-		etll = sort_list_dict(etll, 'date')
-		ptaa = sort_list_dict(ptaa, 'date')
-		etll = [get_all_dates_back(dict1=i) for i in etll]
-		ptaa = [get_all_dates_back(dict1=i) for i in ptaa]
-		return etll, ptaa
-	return False
+		return stud
+	else:
+		return False
 
 def get_right_data(dict1, kind='etl'):
 	new_dict = {}
@@ -352,32 +348,47 @@ def get_etl_cash_payment_bal(start):
 	return res2
 
 def get_debtors_list(form):
-	results = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
+	#results = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
+	results = db.collection("main").document("students").collection('STD').document(f"{form}").collection('STD').get()
+	#print(results[0].to_dict())
 	obj = [add_ids(res.to_dict(), res.id) for res in results]
+	#print(obj[0])
 	all_list = [get_balance(obj=i) for i in obj]
 	return all_list
 
 def get_all_student_list(form):
-	result = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
+	result = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').get()
+	#print(result)
 	data = [add_ids(res.to_dict(), res.id) for res in result]
-	#obj = [i.to_dict() for i in res]
 	return data
 
 #P1 = get_all_student_list(form='3G3')
 #print(P1[0])
+def get_student_balance(idx, form):
+    res = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx)
+    results = res.get()
+    ans = results.to_dict()
+    etl = ans['etl_account'][-1]['balance']
+    pta = ans['pta_account'][-1]['balance']
+    return etl, pta
 
 
 
 def student_list(form):
-	result = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
+	#result = db.collection("main").document("students").collection('STD').where('form', '==', form).get()
+	#result = db.collection("main").document("students").collection('STD').document(f"{form}").collection('STD').get()
+	#results = db.collection("main").document("students").collection('STD').document(f"{form}").collection('STD').get()
+	results = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').get()
+	#print(results)
 	#obj = [i.to_dict() for i in res]
-	data = [add_ids(res.to_dict(), res.id) for res in result]
+	data = [add_ids(res.to_dict(), res.id) for res in results]
 	return data
 
 def get_balance(obj):
 	idx = obj.get('student_id')
 	idx1 = obj.get('id')
-	stud = get_one_student(idx)
+	form = obj.get('form')
+	stud = get_one_student(idx, form)
 	if stud:
 		stud = stud.to_dict()
 		etl_pmt = stud['etl_payment'][:]
@@ -398,6 +409,27 @@ def get_balance(obj):
 		}
 		return data
 	return False
+
+def get_balance2(idx, form):
+	#stud = get_one_student(idx, form)
+	stud = get_student_by_doc(idx, form)
+	#print(stud)
+	#if stud:
+	#stud = stud.to_dict()
+	etl_pmt = stud['etl_payment'][:]
+	pta_pmt = stud['pta_payment'][:]
+	pta = [float(i['amount']) for i in pta_pmt]
+	etl = [float(i['amount']) for i in etl_pmt]
+	charge = stud['charge'][:]
+	pta_char = [float(i['pta']) for i in charge]
+	etl_char = [float(i['etl']) for i in charge]
+	pta_bal = -sum(pta_char) + sum(pta)
+	etl_bal = -sum(etl_char) + sum(etl)
+	data = {
+			'pta_balance': pta_bal,
+			'etl_balance': etl_bal,
+		}
+	return data
 
 
 def promote_all_students():
@@ -431,16 +463,37 @@ def get_user(user_id):
 
 
 
-
+def update_student_balance(form, idx, account='etl_account'):
+    res = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx)
+    results = res.get()
+    ans = results.to_dict()
+    acc = ans[account]
+    amt = [i['amount'] for i in acc]
+    res.update({account+"_bal": sum(amt)})
 
 
 
 ####
-def update_student(data, idx):
-	db.collection("main").document("students").collection('STD').document(idx).update(data)
+def update_payment(amt, form, idx, loop, account):
+    res = db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx)
+    results = res.get()
+    ans = results.to_dict()
+    payments = ans[account]
+    for a,b in enumerate(payments):
+        if a == loop:
+            b['amount'] = amt
+    res.update({account: payments})
 
-def delete_one_student(idx):
-	db.collection("main").document("students").collection('STD').document(idx).delete()
+
+def update_student(data, idx, form):
+	#db.collection("main").document("students").collection('STD').document(idx).update(data)
+	db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx).update(data)
+
+
+def delete_one_student(idx, form):
+	#db.collection("main").document("students").collection('STD').document(idx).delete()
+	db.collection("main").document("students").collection(f"form: {form[0]}").document(f"{form}").collection('STD').document(idx).delete()
+
 
 
 def delete_class(cls_id):

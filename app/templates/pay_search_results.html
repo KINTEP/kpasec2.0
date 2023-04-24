@@ -416,7 +416,7 @@ span a{
 			    <div class="collapse navbar-collapse" id="navbarText">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active " aria-current="page" href="clerk_dashboard.html"id="nav1" style="color:black;">Home</a>
+			          <a class="nav-link active " aria-current="page" href="{{url_for('clerk.dashboard_stats')}}"id="nav1" style="color:black;">Home</a>
 			        </li>
 			        <li class="nav-item">
 			          <a class="nav-link" aria-current="page" href="#"id="nav2" style="color:black;">ETL</a>
@@ -450,6 +450,7 @@ span a{
    	
     
     <div id="form" style="display: none">{{stud['form']}}</div>
+    <div id="idx" hidden>{{stud['idx']}}</div>
    	<div class="class2" id="pppt">
    		<form method="POST" enctype="multipart/form-data" onsubmit="return submitPTAForm(this)" id="form-id" >
   
@@ -488,7 +489,7 @@ span a{
           <div class="ssem">
           	<span style="color: red;" class="fw-bold">*</span>
    		   		<select required 	id="pta_sem1">
-   		   			<option value="">Please choose semester...</option>
+   		   		
    		   			<option value="SEM1">SEM1</option>
    		   			<option value="SEM2">SEM2</option>
    		   		</select>
@@ -498,7 +499,6 @@ span a{
    		   	<div class="ssem">
    		   		<span style="color: red;" class="fw-bold">*</span>
    		   		<select id='pta_mode1' required>
-   		   			<option value="">Please choose payment mode..</option>
    		   			<option value="Cash">Cash</option>
    		   			<option value="Cheque">Cheque</option>
    		   		</select>
@@ -506,7 +506,16 @@ span a{
    		   	</div> 
 
    		   	<div id="" class="" style="margin-left:1%;">
+   		   		<input required type="date" value = "2023-01-10" name="" class="caten" 
+   		   		style='display:' id = 'pta_date'>
+   		   	</div>
+
+   		   	<div id="" class="" style="margin-left:1%;">
    		   		<input type="text" name="" placeholder="Enter cheque number" class="caten" style='' id = 'pta_cheq1'>
+   		   	</div>
+
+   		   	<div id="" class="" style="margin-left:1%;">
+   		   		<input type="text" name="" value="" placeholder="Provide any details" class="caten" style='' id = 'pta_details' required>
    		   	</div>
 
    		   	<div id="pta1" class="pta" style="margin-top: 2%;">
@@ -572,7 +581,7 @@ span a{
           <div class="ssem">
           	<span style="color: red;" class="fw-bold">*</span>
    		   		<select required id="etl_sem1">
-   		   			<option value="">Please choose semester...</option>
+   		   			
    		   			<option value="SEM1">SEM1</option>
    		   			<option value="SEM2">SEM2</option>
    		   		</select>
@@ -582,7 +591,7 @@ span a{
    		   	<div class="ssem">
    		   		<span style="color: red;" class="fw-bold">*</span>
    		   		<select id='etl_mode1' required id="etl_mode1">
-   		   			<option value="">Please choose payment mode..</option>
+   		 
    		   			<option value="Cash">Cash</option>
    		   			<option value="Cheque">Cheque</option>
    		   		</select>
@@ -591,8 +600,17 @@ span a{
    		   	</div> 
 
    		   	<div id="" class="" style="margin-left:1%;">
+   		   		<input required type="date" value = "2023-01-10" name="n_etl_chq" class="caten" 
+   		   		style='display:' id = 'etl_date'>
+   		   	</div>
+
+   		   	<div id="" class="" style="margin-left:1%;">
    		   		<input type="text" name="n_etl_chq" placeholder="Enter cheque number" class="caten" 
    		   		style='display:' id = 'etl_cheq1'>
+   		   	</div>
+   		   	<div id="" class="" style="margin-left:1%;">
+   		   		<input type="text" value="" name="n_etl_chq" placeholder="Provide any details" class="caten" 
+   		   		style='display:' id = 'etl_details' required>
    		   	</div>
    		   	<br>
    		   	<div id="" class="etl" style="margin-top: -2%;">
@@ -626,6 +644,14 @@ span a{
 
 
 <script type="text/javascript">
+	window.addEventListener('load', () => {
+	  sessionStorage.clear();
+	});
+
+</script>
+
+<script type="text/javascript">
+
 	
 function submitETLForm(form) {
 		let form_dat = {
@@ -633,6 +659,8 @@ function submitETLForm(form) {
 					 mode: document.getElementById("etl_mode1").value,
 					 number: document.getElementById("etl_cheq1").value,
 					 amount: document.getElementById("etl_amt1").value,
+					 details: document.getElementById("etl_details").value,
+					 date: document.getElementById("etl_date").value,
 					 name: document.getElementById('lastname').innerText + " " + document.getElementById('firstname').innerText,
 					 form: document.getElementById('form').innerText
   				}
@@ -657,13 +685,17 @@ function submitETLForm(form) {
 					.then(data => {
 					  msg = data['message'];
 					  if (msg === 'success') {
-					  	
-					  		sessionStorage.setItem('etl_amt', document.getElementById("etl_amt1").value)
+					  		etl_payes = {
+					  			idx: document.getElementById('idx').innerText,
+					  			etl_amt:document.getElementById("etl_amt1").value
+					  		}
+					  		sessionStorage.setItem('etl_data', JSON.stringify(etl_payes))
 
 					  		document.getElementById("etl_sem1").value = ""
 					  		document.getElementById("etl_mode1").value = ""
 					  		document.getElementById("etl_cheq1").value = ""
 					  		document.getElementById("etl_amt1").value = ""
+					  		document.getElementById("etl_details").value = ""
 					  		
 					  		return swal({
 										  title: "SUCCESSFUL!",
@@ -699,6 +731,8 @@ function submitPTAForm(form) {
 					 mode: document.getElementById("pta_mode1").value,
 					 number: document.getElementById("pta_cheq1").value,
 					 amount: document.getElementById("pta_amt1").value,
+					 details: document.getElementById("pta_details").value,
+					 date: document.getElementById("pta_date").value,
 					 name: document.getElementById('lastname').innerText + " " + document.getElementById('firstname').innerText,
 					 form: document.getElementById('form').innerText
   				}
@@ -723,14 +757,18 @@ function submitPTAForm(form) {
 					.then(data => {
 					  msg = data['message'];
 					  if (msg === 'success') {
-					  	
-					  		
-					  		sessionStorage.setItem('pta_amt', document.getElementById("pta_amt1").value)
+					  		pta_payes = {
+					  			idx: document.getElementById('idx').innerText,
+					  			pta_amt:document.getElementById("pta_amt1").value
+					  		}
+
+					  		sessionStorage.setItem('pta_data', JSON.stringify(pta_payes))
 
 					  		document.getElementById("pta_sem1").value = ""
 					  		document.getElementById("pta_mode1").value = ""
 					  		document.getElementById("pta_cheq1").value = ""
 					  		document.getElementById("pta_amt1").value = ""
+					  		document.getElementById("pta_details").value = ""
 					  		
 					  		return swal({
 										  title: "SUCCESSFUL!",
@@ -765,26 +803,32 @@ function submitPTAForm(form) {
 		<script type="text/javascript">
 			 
 			$("#nav4").click(function () {
-				pta20 = sessionStorage.getItem("pta_amt")
-				etl20 =  sessionStorage.getItem("etl_amt")
+				pta20 = JSON.parse(sessionStorage.getItem("pta_data"))
+				etl20 =  JSON.parse(sessionStorage.getItem("etl_data"))
 				
+				idx = document.getElementById('idx').innerText
+				pta_value = 0
+				etl_value = 0
 
-				if (pta20 && etl20) {
-        total = parseFloat(pta20) + parseFloat(etl20)
-        document.getElementById("pta_amt11").innerText = pta20
-				document.getElementById("etl_amt11").innerText = etl20
-			    }
-			    if (pta20 && !etl20) {
-			       total = parseFloat(pta20)
-			       document.getElementById("pta_amt11").innerText = pta20
-						document.getElementById("etl_amt11").innerText = 0
-			    }
+				if (pta20){
+					
+					if (pta20['idx'] === idx){
+						pta_value = parseFloat(pta20['pta_amt'])
+					}
+				}
 
-			    if (etl20 && !pta20) {
-			       total = parseFloat(etl20)
-			       document.getElementById("pta_amt11").innerText = 0
-							document.getElementById("etl_amt11").innerText = etl20
-			    }
+				if (etl20){
+					if (etl20['idx'] === idx){
+						etl_value = parseFloat(etl20['etl_amt'])
+					}
+				}
+
+			
+        		document.getElementById("pta_amt11").innerText = pta_value
+				document.getElementById("etl_amt11").innerText = etl_value
+			    
+			    total = pta_value + etl_value
+
 			    document.getElementById('total11').innerText = total
 			    document.getElementById("waa").style.display = "none"
 			    document.getElementById("waa2").style.display = "block"

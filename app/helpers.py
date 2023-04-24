@@ -38,6 +38,15 @@ def get_date2(today):
     date2 = time.mktime(date.timetuple())
     return date2
 
+def get_date22(today):
+    year = int(today[:4])
+    month = int(today[5:7])
+    day = int(today[-2:])
+    date = df(year, month, day)
+    #print(date)
+    date2 = time.mktime(date.timetuple())
+    return date2
+
 def get_all_dates_back(dict1):
     dict1['date'] = get_date_back(dict1['date'])
     return dict1
@@ -64,7 +73,7 @@ def generate_receipt_no():
         name = f"nums{today.year}.txt"
         newf = open(name, "a")
     y1 = str(dt.datetime.now().year) + str(dt.datetime.now().month)
-    name = r"C:/Users/user/Desktop/kpasec201/app/number.txt"
+    name = r"number.txt"
     rand = random.randint(10000, 100000)
     newf = open(name, "a")
     file = open(name, "r")

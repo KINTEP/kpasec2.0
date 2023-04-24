@@ -245,7 +245,7 @@ span a{
 	 <div class="narv">
 
 		<div class="income">
-		<h3 style="text-align: center;padding-top: 5vh;padding-bottom: 2vh;">All students for <br> <abbr style="font-family: cursive; color: red;font-size:18px"><span class="fw-bold text-lg" id="">{{form}}</span></abbr><abbr style="font-family: cursive; color: red;font-size:18px"></abbr> </h3>
+		<h3 style="text-align: center;padding-top: 5vh;padding-bottom: 2vh;">All students for <br> <abbr style="font-family: cursive; color: red;font-size:18px"><span class="fw-bold text-lg" id="form_id">{{form}}</span></abbr><abbr style="font-family: cursive; color: red;font-size:18px"></abbr> </h3>
 		
 	    </div>
 		<ul>
@@ -268,7 +268,7 @@ span a{
 					  <td>
 					  	<form method="POST" onsubmit="return sendData(this)">
 					  		<input type="hidden" name="" value="{{stud['id']}}" style="display: none;">
-					  		<input type="submit" name="" value="Pay" class="btn-sm btn-success rounded-pill">
+					  		<input type="submit" name="" value="Pay" class="btn-sm btn-success" style="margin: 10px 5px 5px 6px">
 					  	</form>
 					  </td>
 				</tr>
@@ -319,9 +319,10 @@ span a{
 	function sendData(element) {
 		children = element.children
 		idx = children[0].value
-
+		form = document.getElementById('form_id').innerHTML
 		let form_dat = {
-		  	pay_id: idx
+		  	pay_id: idx,
+		  	form : form
 		  }
 
 		  fetch("/clerk/get_pay_data", {
