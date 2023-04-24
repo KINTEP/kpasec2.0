@@ -1,0 +1,7 @@
+runtime: python38
+entrypoint: gunicorn -b :$PORT run:app
+env_variables:
+  SECRET_KEY: <your_secret_key>
+handlers:
+- url: /.*
+  script: auto
