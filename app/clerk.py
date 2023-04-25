@@ -249,7 +249,6 @@ def get_pay_data(current_user):
 def student_pay(current_user):		
 	form = request.args.get('form')
 	list1 = student_list(form=form)
-	#print(list1)
 	template = render_template('student_pay.html', list1=list1, form=form)
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
