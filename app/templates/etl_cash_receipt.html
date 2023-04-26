@@ -198,7 +198,7 @@ span a{
 			    <div class="collapse navbar-collapse" id="navbarText">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active " aria-current="page" href="accountant_dashboard.html"id="nav1" style="color:black;">Home</a>
+			          <a class="nav-link active " aria-current="page" href="{{url_for('accountant.dashboard_stats')}}"id="nav1" style="color:black;">Home</a>
 			        </li>		        
 			      </ul>
 
@@ -237,19 +237,19 @@ span a{
    			</tr>
    			{% for data in results %}
    			<tr>
-						<td>{{loop.index + 1}}</td>
-						<td class="fom">{{data['date'].date()}}</td>
+						<td>{{loop.index}}</td>
+						<td class="fom">{{data['date2'] | date_formats}}</td>
 						<td>{{data['name']}}</td>
 						{% if data['mode'] == 'Cash' %}
 						<td>{{data['tx_id']}}</td>
 						<td></td>
-						<td>{{data['amount']}}</td>
+						<td>{{data['amount'] | currency_format}}</td>
 						<td></td>
 						{% else %}
 						<td></td>
 						<td>{{data['tx_id']}}</td>
 						<td></td>
-						<td>{{data['amount']}}</td>
+						<td>{{data['amount'] | currency_format}}</td>
 						{% endif %}
 						
 						<td></td>
@@ -261,8 +261,8 @@ span a{
 						<td class="text-success fw-bold">TOTALS</td>
 						<td></td>
 						<td></td>
-						<td class="text-success fw-bold">{{total1}}</td>
-						<td class="text-success fw-bold">{{total2}}</td>
+						<td class="text-success fw-bold">{{total1 | currency_format}}</td>
+						<td class="text-success fw-bold">{{total2 | currency_format}}</td>
 						<td class="text-success fw-bold"></td>
 			  </tr>
 			</table><br><br>

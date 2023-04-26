@@ -194,7 +194,7 @@ span a{
 			    <div class="collapse navbar-collapse" id="navbarText">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active " aria-current="page" href="accountant_dashboard.html"id="nav1" style="color:black;">Home</a>
+			          <a class="nav-link active " aria-current="page" href="{{url_for('accountant.dashboard_stats')}}"id="nav1" style="color:black;">Home</a>
 			        </li>
 			        <li class="nav-item d-flex" >
 		
@@ -236,7 +236,7 @@ span a{
 					<td></td>
 					<td>Balance b/d</td>
 					<td></td>
-					<td>{{profit0}}</td>
+					<td>{{profit0 | currency_format}}</td>
 					<td></td>
 				</tr>
 				
@@ -244,7 +244,7 @@ span a{
 					<td></td>
 					<td>Dues & Donation</td>
 					<td></td>
-					<td>{{dues1}}</td>
+					<td>{{dues1 | currency_format}}</td>
 					<td></td>
 				</tr>
 
@@ -252,7 +252,7 @@ span a{
 					<td></td>
 					<td>Other Businesses</td>
 					<td></td>
-					<td>{{other1}}</td>
+					<td>{{other1 | currency_format}}</td>
 					<td></td>
 				</tr>
 				<tr>
@@ -260,7 +260,7 @@ span a{
 					<td class="fw-bold text-success">Total Income</td>
 					<td></td>
 					<td></td>
-					<td class="fw-bold text-success">{{total1}}</td>
+					<td class="fw-bold text-success">{{total1 | currency_format}}</td>
 				</tr>
 
 				<tr>
@@ -284,7 +284,7 @@ span a{
 					<td class="text-danger"></td>
 					<td class="fw-">{{exp['detail']}}</td>
 					<td>{{loop.index}}</td>
-					<td>{{exp['total']}}</td>
+					<td>{{exp['total'] | currency_format}}</td>
 					<td class="fw-bold"></td>
 				</tr>
 				{% endfor %}
@@ -293,7 +293,7 @@ span a{
 					<td class="fw-bold">Total {{key.capitalize()}} Expenses</td>
 					<td></td>
 					<td></td>
-					<td class="fw-bold">{{totals[key]}}</td>
+					<td class="fw-bold">{{totals[key] | currency_format}}</td>
 				</tr>
 			{% endfor %}
 			<tr>
@@ -309,9 +309,9 @@ span a{
 					<td></td>
 					<td></td>
 					{% if profit1 < 0 %}
-					<td class="fw-bold text-danger">{{profit1}}</td>
+					<td class="fw-bold text-danger">{{profit1 | currency_format}}</td>
 					{% else %}
-					<td class="fw-bold text-success">{{profit1}}</td>
+					<td class="fw-bold text-success">{{profit1 | currency_format}}</td>
 					{% endif %}
 				</tr>
 			</table><br><br>

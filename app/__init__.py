@@ -43,11 +43,12 @@ def login_required(f):
 
 @app.template_filter()
 def currency_format(value):
-    locale.setlocale(locale.LC_ALL, '')
-    formatted_value = locale.format_string('%.2f', abs(value), grouping=True)
-    if value < 0:
-        formatted_value = '(' + formatted_value + ')'
-    return formatted_value
+	value = float(value)
+	locale.setlocale(locale.LC_ALL, '')
+	formatted_value = locale.format_string('%.2f', abs(value), grouping=True)
+	if value < 0:
+		formatted_value = '(' + formatted_value + ')'
+	return formatted_value
 
 
 @app.template_filter()

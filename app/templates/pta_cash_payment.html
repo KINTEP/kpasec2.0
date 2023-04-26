@@ -201,7 +201,7 @@ span a{
 			    <div class="collapse navbar-collapse" id="navbarText">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active " aria-current="page" href="accountant_dashboard.html"id="nav1" style="color:black;">Home</a>
+			          <a class="nav-link active " aria-current="page" href="{{url_for('accountant.dashboard_stats')}}"id="nav1" style="color:black;">Home</a>
 			        </li>		        
 			      </ul>
 
@@ -242,11 +242,11 @@ span a{
 					<td>{{data['detail']}}</td>
 					<td>{{data['category']}}</td>
 					{% if data['mode'] == 'CASH'%}
-					<td>{{data['total']}}</td>
+					<td>{{data['total'] | currency_format}}</td>
 					<td></td>
 					{% else %}
 					<td></td>
-					<td>{{data['total']}}</td>
+					<td>{{data['total'] | currency_format}}</td>
 					{% endif %}
 			</tr>
 			{% endfor %}
@@ -255,8 +255,8 @@ span a{
 					<td></td>
 					<td class="text-success fw-bold">TOTAL</td>
 					<td></td>
-					<td class="text-success fw-bold">{{total1}}</td>
-					<td class="text-success fw-bold">{{total2}}</td>
+					<td class="text-success fw-bold">{{total1 | currency_format}}</td>
+					<td class="text-success fw-bold">{{total2 | currency_format}}</td>
 				</tr>
 			</table><br><br>
 		</div><br><br>

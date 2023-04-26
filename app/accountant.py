@@ -12,7 +12,6 @@ report_data = {}
 all_debtors = {}
 
 
-
 @accountant.route('/reports', methods = ['POST'])
 @login_required
 def reports(current_user):
@@ -70,8 +69,6 @@ def ledger_results(current_user):
 	etl = student['etl_account']
 	ptaa = [i['amount'] for i in pta]
 	etll  = [i['amount'] for i in etl]
-
-	print(etl)
 	
 	data = {
 				'pta': pta,
@@ -104,14 +101,10 @@ def student_by_doc(current_user):
 @login_required
 def debtors_list(current_user):		
 	form = request.args.get('form')
-	#list1 = get_debtors_list(form=form)
 	list1 = get_all_student_list(form=form)
-	print(list1[0])
-	
 	pta_total = sum([i.get('pta_account_bal', 0) for i in list1 if not np.isnan(i.get('pta_account_bal', 0))])
 	etl_total = sum([i.get('etl_account_bal', 0) for i in list1 if not np.isnan(i.get('etl_account_bal', 0))])
 	list1 = sorted(list1, key=lambda x: x['lastname'])
-	print(etl_total)
 	template = render_template('debtors_list.html', list1=list1, form=form, pta_total=pta_total, etl_total=etl_total)
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
@@ -122,7 +115,6 @@ def debtors_list(current_user):
 def all_students(current_user):		
 	form = request.args.get('form')
 	students = get_all_student_list(form=form)
-	#print(students[0]['phone'])
 	template = render_template('all_students.html', students=students, form=form)
 	response = make_response(template)
 	response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
@@ -319,6 +311,7 @@ def etl_cash_receipt(current_user):
 	start = report_data.get('start')
 	end = report_data.get('end')
 	results = get_etl_cash_receipt(start, end)
+	print(results)
 	start = get_date_back(f1=start)
 	end = get_date_back(f1=end)
 	total1 = sum([float(i['amount']) for i in results if i['mode'] == 'Cash'])
@@ -383,8 +376,8 @@ def etl_income_and_expenditure(current_user):
 	exp1 = sum([float(i.get('total')) for i in exxp1])
 	
 	cats = list(set([i['category'] for i in exxp1]))
-	data = {val1: [i for i in res if i['category'] == val1] for val1 in cats}
-	totals = {val1: sum([float(i['total']) for i in res if i['category'] == val1]) for val1 in cats}
+	data = {val1: [i for i in exxp1 if i['category'] == val1] for val1 in cats}
+	totals = {val1: sum([float(i['total']) for i in exxp1 if i['category'] == val1]) for val1 in cats}
 	
 	#Total
 	total1 = dues1 + other1 + profit0
@@ -421,8 +414,8 @@ def pta_income_and_expenditure(current_user):
 	exp1 = sum([float(i.get('total')) for i in exxp1])
 	
 	cats = list(set([i['category'] for i in exxp1]))
-	data = {val1: [i for i in res if i['category'] == val1] for val1 in cats}
-	totals = {val1: sum([float(i['total']) for i in res if i['category'] == val1]) for val1 in cats}
+	data = {val1: [i for i in exxp1 if i['category'] == val1] for val1 in cats}
+	totals = {val1: sum([float(i['total']) for i in exxp1 if i['category'] == val1]) for val1 in cats}
 	
 	#Total
 	total1 = dues1 + other1 + profit0
@@ -476,6 +469,7 @@ def get_all_pta_expenses(current_user):
 @login_required
 def daily_reports(current_user):
 	etl1 = get_etl_income_today()
+	print(etl1)
 	etl2 = [remove_all_keys(d,['semester', 'clerk', 'date']) for d in etl1]
 	etl3 = [change_date(res) for res in etl2]
 	etl3 = etl3[::-1]

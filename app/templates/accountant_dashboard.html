@@ -967,9 +967,9 @@ span a{
 		 	      <div class="col waa " >
 		 	        <a href=""><div class=" btn btn-success btn1" id="btn1"><span id=""></span>Student Stats<br><p id="">{{stud}}</p></div></a> 
 
-		 	         <a href=""><div class=" btn btn-success btn2" id="btn2">PTA Income<br><p>GHC <span id="">{{pta}}</span></p></div></a>
+		 	         <a href=""><div class=" btn btn-success btn2" id="btn2">PTA Income<br><p>GHC <span id="">{{pta | currency_format }}</span></p></div></a>
 
-		 	         <a href=""><div class=" btn btn-success btn3" id="btn3"> E.T.L Income<br><p>GHC <span id="">{{etl}}</span></p></div>	</a>	 	
+		 	         <a href=""><div class=" btn btn-success btn3" id="btn3"> E.T.L Income<br><p>GHC <span id="">{{etl | currency_format }}</span></p></div>	</a>	 	
 		         </div>
 		       </div>
 	
@@ -980,7 +980,7 @@ span a{
 		 	 <a href="{{url_for('accountant.daily_reports')}}"><div class=" btn btn-success btn4" id="btn4">Daily<br>Report</div></a>
 		 	 <a href="#"><div class=" btn btn-success btn5" id="btn5">Generate<br>Student Ledger</div></a>
 
-		 	 <a href=""><div class=" btn btn-success btn6" id="btn6">Expenses<br><p> GHC 891</p></div></a>
+		 	 <a href=""><div class=" btn btn-success btn6" id="btn6">Expenses<br><p> GHC 0.00</p></div></a>
 		 	
 		 </div>
 		 </div><br><br><br>
@@ -1057,7 +1057,6 @@ span a{
 			<label>Choose A Task</label><br>
 			<select style="width:70%;" id="task" required>
 				<option></option>
-				<option>Begin Semester</option>
 				<option>Make PTA Expenses</option>
 				<option>Make ETL Expenses</option>
 				<option>Promote Students</option>

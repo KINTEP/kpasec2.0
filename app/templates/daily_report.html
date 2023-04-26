@@ -372,12 +372,12 @@ input {
    			</tr>
    			{% for etl in data['etl'] %}
    			<tr>
-						 <td>{{loop.index + 1}}</td>
+						 <td>{{loop.index}}</td>
 						 <td class="fom">{{etl['class']}}</td>
 						 <td>{{etl['name']}}</td>
 						 <td>{{etl['tx_id']}}</td>
 						 <td>{{etl['date2']}}</td>
-						 <td>{{etl['amount']}}</td>
+						 <td>{{etl['amount'] | currency_format }}</td>
    			</tr>
    			{% endfor %}
    			<tr>   
@@ -386,7 +386,7 @@ input {
 		   			<td style="border:0px solid transparent;"></td>
 		   			<td style="border:0px solid transparent;"></td>
 		   			<th>Total</th>
-		   			<td>{{etl_total}}</td>
+		   			<td>{{etl_total | currency_format}}</td>
    			</tr>
    		</table><br>
 
@@ -404,12 +404,12 @@ input {
    			{% for pta in data['pta']%}
    			
    			<tr>
-						<td>{{loop.index+1}}</td>
+						<td>{{loop.index}}</td>
 						<td class="fom">{{pta['class']}}</td>
 						<td>{{pta['name']}}</td>
 						<td>{{pta['tx_id']}}</td>
 						<td>{{pta['date2']}}</td>
-						<td>{{pta['amount']}}</td>
+						<td>{{pta['amount'] | currency_format}}</td>
 						{% if pta['category'] == 'DON' %}
 						<td>DON</td>
 						{% else %}
@@ -423,7 +423,7 @@ input {
 			   		<td style="border:0px solid transparent;"></td>
 			   		<td style="border:0px solid transparent;"></td>
 			   		<th>Total</th>
-			   		<td>{{pta_total}}</td>
+			   		<td>{{pta_total | currency_format}}</td>
 			   		<td></td>
    			</tr>
    		</table><br><br>

@@ -6,21 +6,7 @@ from app import bcrypt
 
 users = Blueprint('users', __name__, url_prefix = '/users')
 
-#hash_password = bcrypt.generate_password_hash("kuminewton").decode("utf-8")
-#add_staff(fullname="Kumi Newton", email="kuminewton@gmail.com", password=hash_password, role=2)
 
-#firebaseConfig = {
-#  "apiKey": "AIzaSyAbmZwfJBGdsiP6y5xGLIVXizI9G4kcpGY",
-#  "authDomain": "kpasectrial.firebaseapp.com",
-#  "projectId": "kpasectrial",
-#  "storageBucket": "kpasectrial.appspot.com",
-#  "messagingSenderId": "572488084748",
-#  "appId": "1:572488084748:web:7faff7142e6aa15cb52d29"
-#}
-
-
-#firebase = pyrebase.initialize_app(firebaseConfig)
-#auth = firebase.auth()
 
 @users.route('/register_staff', methods = ['POST', 'GET'])
 def register_staff():
