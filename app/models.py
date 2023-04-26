@@ -7,23 +7,10 @@ from .helpers import *
 
 
 
-data_to = {
-	
-  "type": "service_account",
-  "project_id": "kpasec2",
-  "private_key_id": "1218f19b379d2d8a536dd26ffeeafd890ec0e57c",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDHegKHVspemnN5\nLMW2rQdUawT1oVvtUUYddXREXb+2w6U646Wk11/PaqSfluWZvRrFSh69aFwAafzl\ncRCnWNdbqjh0c7sKzH/kQGGQUDGktOb2ajPldi/qPaFpJ8dX9FxnOV3OrL0EqDAL\nWmlSrxkUPCKI1ZM4TWj2zVZjpeNeSgj7BPGFeainGdHAQN6pcXKtRd+F0VuEe3bc\nNF8oc07WKOh47vUHEZo8pUmUE/sUIFq2n1O+h2ahu8SyweRqa0JO+gq+TY2rsvsm\njFP67ZoRCsMFf41rXFxvjXFn4tpKWQHHR2Mz2OeiaaZtVwP3v6fMEBjEXx5BO8ua\nYMzoeBT/AgMBAAECggEAYB1f/opJNFBDd42lLqIst/ZhC2HWg4D3wdYIUbDCYXPf\nt4JdHBJSrgR6khMJSoydy5YtPaJ9Qg3Pt1ZFaf0at6ZLUYE6DLgAn6CN4hVh9jTc\nXLtLijLqX3mWvq5WFQE/TNWNZ7o/0XCgxbeorBiGgwN+uGQAbc6O1uyVxan25kT3\niGHQVcVV+vOc1TxUvYqrj23FoHMIMX6156LXNiYb4YnfMdjOBkvobRS2EYJZnceD\nyjrohbxVT2GNGqVAredjJNVqq9uXdQDFr+ERELYQN5jEWKXQUiiIfG57bin/KcG1\nloi3vRslB0ZuRujgNv4hsdMJ+MUB24DkSu+vYB4pgQKBgQD1yeChAYcI0F8/Y4Vy\nxKVKAMlhGmxTD6QTreYD2wjVd62yKmqf74Z1wRClyoyzhXyEbdQbUChEJFKaUprr\n7I7JdOBBpn2stBr2kM/UmCCNpIbFiNe388zbl54GJlRu4K13xAah6slJpJzhfr2a\nhVxIZtaDZzCSyOeZWUi3Iw5DHwKBgQDPw5L79rY621Y55Iu8n5Xh3gI7qlj7H9dX\n+W1A2YJCcINYdI325Z8pJPDjGbPPTFlF703ZXUJUm+83q1laPEJy0ZFVgrUl0osb\nKly/UZ8TJ8b4TaJcqHiBwoZvg9v5yc+anRp408d/OvqgJfGjbbMXJaDd/Lvsmlbj\nsyBFPy7SIQKBgQCpvQfGyPJDMPuGICmJj6oCSDbKO2AxoGyUNpTRdtNL8EFg+A/4\ncYbvDSx9AjtWwsmx/tLrJdkY7eipsIBSi2Q0VeWFEQBbY2n3exw72e8pQkTcZ9tp\nqxF/WN6FqrTGeZzyR8q4yRbHJ8o7o7Y23wBS88oSpxGRXPMsIM+pwajYywKBgGgP\no/oRevqFy21ZvGewYsjrgqDR1JmLPDezFXaquuR+KDtQvZ5RKmPYPdLxl68XpYsy\nrgJWBJgONkXiy/E3R2zs7Gcw/XxBNS1ZDXVB83QLs0vAzrasJxePD/igybgVzaa6\nU3z7Teu65bb66kmZ815/mVA2ewWp1CVeHaaxW8khAoGAZP43HLKaYRyZ0bgHFeGN\nXEyS6p4zX2pcLyiZTUUwCuyth377olNqMHJyGnIaELjK7lXFZts6B5TRgsPFWtRK\nPa3nDnyVlZIbXUCrm9YJgE2jwOWoGbnQqLIha89YGVuI5BbiUc3TK1Pf5+TY/E1d\nh3e98bGoekGVA3AN9HvdpFM=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-lceyh@kpasec2.iam.gserviceaccount.com",
-  "client_id": "102621528940948216766",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-lceyh%40kpasec2.iam.gserviceaccount.com"
-
-}
 
 
-cred = credentials.Certificate(data_to)
+
+cred = credentials.Certificate(r"app/API.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
